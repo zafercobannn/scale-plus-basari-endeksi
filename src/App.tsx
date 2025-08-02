@@ -342,7 +342,7 @@ function App() {
               </div>
               <div className="champion-info">
                 <h2 className="champion-name">{topPerformer.name}</h2>
-                <p className="champion-title">Temmuz Ayı Başarı Endeksi Şampiyonu! 🏆</p>
+                <p className="champion-title">Temmuz<br />Başarı Endeksi Şampiyonu! 🏆</p>
                 <div className="champion-stats">
                   <div className="champion-stat-item">
                     <span className="champion-stat-label">Başarı Endeksi:</span>
