@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './App.css';
 import SuccessIndexDashboard from './components/SuccessIndexDashboard';
 import { RepresentativeData } from './types';
+import { calculateSuccessIndex } from './utils/calculations';
+import RepresentativeImage from './components/RepresentativeImage';
 
 function App() {
   // Default veri ile başla
@@ -323,8 +325,37 @@ function App() {
     }
   };
 
+  // 1. olan kişiyi bul
+  const calculatedData = calculateSuccessIndex(representatives);
+  const topPerformer = calculatedData.length > 0 ? calculatedData[0] : null;
+
   return (
     <div className="App">
+      {/* 1. olan kişi için özel bölüm */}
+      {topPerformer && (
+        <div className="top-performer-section">
+          <div className="top-performer-card">
+            <div className="top-performer-image">
+              <RepresentativeImage name={topPerformer.name} size="large" />
+            </div>
+            <div className="top-performer-info">
+              <h2 className="top-performer-name">{topPerformer.name}</h2>
+              <p className="top-performer-title">Temmuz Ayı Başarı Endeksi Şampiyonu! 🏆</p>
+              <div className="top-performer-stats">
+                <div className="stat-item">
+                  <span className="stat-label">Başarı Endeksi:</span>
+                  <span className="stat-value">{(topPerformer.successIndex * 100).toFixed(2)}%</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-label">Sıralama:</span>
+                  <span className="stat-value">#{topPerformer.rank}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <SuccessIndexDashboard representatives={representatives} />
     </div>
   );
