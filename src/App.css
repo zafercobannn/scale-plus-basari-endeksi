@@ -405,35 +405,75 @@
   }
   
   .left-sidebar {
-    width: 300px;
+    width: 280px;
   }
   
   .sidebar {
-    width: 320px;
+    width: 300px;
   }
   
   .content-area {
-    padding: 1.5rem;
+    padding: 1rem;
   }
   
   .champion-card {
-    padding: 1.5rem;
+    padding: 1.2rem;
   }
   
   .champion-name {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
   
   .champion-title {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+  }
+  
+  .champion-stat-label {
+    font-size: 0.8rem;
+  }
+  
+  .champion-stat-value {
+    font-size: 1rem;
   }
   
   .sidebar-section {
-    padding: 0.7rem;
+    padding: 0.6rem;
   }
   
   .sidebar-title {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+  }
+  
+  .quick-stat-item {
+    padding: 0.3rem;
+  }
+  
+  .team-stat-item {
+    padding: 0.4rem;
+  }
+  
+  .quick-stat-label {
+    font-size: 0.85rem;
+  }
+  
+  .quick-stat-value {
+    font-size: 0.9rem;
+  }
+  
+  .team-stat-label {
+    font-size: 0.85rem;
+  }
+  
+  .team-stat-value {
+    font-size: 1rem;
+  }
+  
+  .performance-name {
+    font-size: 0.9rem;
+  }
+  
+  .performance-score {
+    font-size: 0.8rem;
   }
 }
 
