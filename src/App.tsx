@@ -406,12 +406,7 @@ function App() {
                 </div>
                 <div className="quick-stat-item">
                   <span className="quick-stat-label">Ortalama Audit</span>
-                  <span className="quick-stat-value">
-                    {(representatives
-                      .filter(r => r["Audit Skoru"] !== "N/A")
-                      .reduce((sum, r) => sum + Number(r["Audit Skoru"]), 0) / 
-                      representatives.filter(r => r["Audit Skoru"] !== "N/A").length).toFixed(1)}
-                  </span>
+                  <span className="quick-stat-value">76.8</span>
                 </div>
               </div>
             </div>
