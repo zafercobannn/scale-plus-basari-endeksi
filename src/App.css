@@ -1,7 +1,9 @@
 .App {
-  padding: 20px;
-  max-width: 1400px;
-  margin: 0 auto;
+  padding: 0; /* Padding'i de kaldır */
+  width: 100vw; /* Full viewport width */
+  margin: 0; /* Margin'i kaldır */
+  max-width: none; /* Max-width kısıtlamasını kaldır */
+  overflow-x: hidden; /* Yatay scroll'u engelle */
 }
 
 .input-toggle {
