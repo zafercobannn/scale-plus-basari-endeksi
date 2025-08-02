@@ -14,16 +14,8 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
   const [selectedRepresentative, setSelectedRepresentative] = useState<CalculatedRepresentative | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  const [currentMonth] = useState(() => {
-    const now = new Date();
-    const months = [
-      'Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
-      'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'
-    ];
-    // Temmuz ayını sabit olarak ayarla
-    return 'Temmuz';
-  });
-  const [currentYear] = useState(() => new Date().getFullYear());
+  const [currentMonth] = useState('Temmuz');
+  const [currentYear] = useState(2025);
 
   const calculatedData = useMemo(() => {
     const result = calculateSuccessIndex(representatives);
@@ -74,19 +66,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
     return '#dc3545'; // Kırmızı
   };
 
-  const getCallCountPerformance = (count: number): { label: string; color: string } => {
-    if (count >= 700) return { label: 'Mükemmel', color: '#28a745' };
-    if (count >= 500) return { label: 'İyi', color: '#ffc107' };
-    if (count >= 300) return { label: 'Orta', color: '#fd7e14' };
-    return { label: 'Geliştirilmeli', color: '#dc3545' };
-  };
 
-  const getCallDurationPerformance = (duration: number): { label: string; color: string } => {
-    if (duration <= 350) return { label: 'Mükemmel', color: '#28a745' };
-    if (duration <= 450) return { label: 'İyi', color: '#ffc107' };
-    if (duration <= 550) return { label: 'Orta', color: '#fd7e14' };
-    return { label: 'Geliştirilmeli', color: '#dc3545' };
-  };
 
   const handleRowClick = (representative: CalculatedRepresentative) => {
     setSelectedRepresentative(representative);

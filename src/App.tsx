@@ -310,20 +310,7 @@ function App() {
     }
   ];
 
-  const [representatives, setRepresentatives] = useState<RepresentativeData[]>(defaultData);
-  const [jsonInput, setJsonInput] = useState<string>('');
-  const [showInput, setShowInput] = useState<boolean>(false);
-
-  const handleJsonSubmit = () => {
-    try {
-      const parsedData = JSON.parse(jsonInput);
-      const dataArray = Array.isArray(parsedData) ? parsedData : [parsedData];
-      setRepresentatives(dataArray);
-      setShowInput(false); // Veri girildikten sonra input'u gizle
-    } catch (error) {
-      alert('JSON formatı hatalı! Lütfen geçerli bir JSON girin.');
-    }
-  };
+  const [representatives] = useState<RepresentativeData[]>(defaultData);
 
   // 1. olan kişiyi bul
   const calculatedData = calculateSuccessIndex(representatives);

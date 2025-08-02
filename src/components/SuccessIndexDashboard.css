@@ -68,31 +68,7 @@
   justify-content: center;
 }
 
-.search-container {
-  position: relative;
-}
 
-.search-input {
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
-  padding: 8px 12px 8px 36px;
-  border-radius: 6px;
-  width: 200px;
-  font-size: 14px;
-}
-
-.search-input::placeholder {
-  color: #666;
-}
-
-.search-icon {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 14px;
-  opacity: 0.6;
-}
 
 /* Table Styles */
 .table-container {
@@ -548,9 +524,7 @@
     justify-content: space-between;
   }
   
-  .search-input {
-    width: 180px;
-  }
+
   
   .team-stats-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -609,9 +583,7 @@
     justify-content: space-between;
   }
   
-  .search-input {
-    width: 150px;
-  }
+
   
   .team-stats-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -675,10 +647,7 @@
     justify-content: space-between;
   }
   
-  .search-input {
-    width: 120px;
-    font-size: 12px;
-  }
+
   
   .info-button {
     padding: 6px 12px;
@@ -751,10 +720,7 @@
     justify-content: space-between;
   }
   
-  .search-input {
-    width: 100px;
-    font-size: 11px;
-  }
+
   
   .info-button {
     padding: 5px 10px;
