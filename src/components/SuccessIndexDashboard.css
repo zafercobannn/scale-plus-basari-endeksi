@@ -141,6 +141,11 @@
   text-align: center;
 }
 
+/* Temsilci isimleri için özel hizalama */
+.dashboard-table td:nth-child(2) {
+  text-align: left;
+}
+
 .dashboard-table td:first-child {
   padding-left: 24px;
 }
