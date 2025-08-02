@@ -17,7 +17,7 @@ export const getRepresentativeImage = (name: string): string => {
   // GitHub Pages için doğru yol
   const baseUrl = process.env.NODE_ENV === 'production' 
     ? '/cs-basari-endeksi' 
-    : '';
+    : '/cs-basari-endeksi';
   
   return `${baseUrl}/images/representatives/${cleanName}.png`;
 };
@@ -41,7 +41,7 @@ export const getDefaultAvatar = (): string => {
   // GitHub Pages için doğru yol
   const baseUrl = process.env.NODE_ENV === 'production' 
     ? '/cs-basari-endeksi' 
-    : '';
+    : '/cs-basari-endeksi';
   
   return `${baseUrl}/images/representatives/default.png`;
 }; 
