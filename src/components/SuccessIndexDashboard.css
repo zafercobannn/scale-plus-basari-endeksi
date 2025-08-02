@@ -1,5 +1,5 @@
 .dashboard {
-  background: white;
+  background: #f8f9fa;
   border-radius: 0;
   box-shadow: none;
   overflow: hidden;
@@ -96,16 +96,16 @@
 
 /* Table Styles */
 .table-container {
-  overflow-x: auto;
+  overflow-x: hidden;
   width: 100%;
-  padding: 0 32px 32px 32px;
+  padding: 0 16px 32px 6px;
   box-sizing: border-box;
 }
 
 .dashboard-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 1200px;
+  min-width: 1100px;
   font-size: 14px;
 }
 
@@ -324,7 +324,7 @@
 }
 
 .stat-value {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   color: #2d3748;
   margin-bottom: 4px;

@@ -153,7 +153,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
               </div>
               <div className="stat-content">
                 <div className="stat-value">{Math.round(teamStats.callCount.avg).toLocaleString()}</div>
-                <div className="stat-label">Toplam Çağrı Adedi</div>
+                <div className="stat-label">Ortalama Çağrı Adedi</div>
               </div>
             </div>
             <div className="stat-card">

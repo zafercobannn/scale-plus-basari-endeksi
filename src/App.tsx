@@ -374,7 +374,7 @@ function App() {
                 <h3 className="sidebar-title">📊 Takım İstatistikleri</h3>
                 <div className="team-stats-sidebar">
                   <div className="team-stat-item">
-                    <span className="team-stat-label">Toplam Çağrı Adedi</span>
+                    <span className="team-stat-label">Ortalama Çağrı Adedi</span>
                     <span className="team-stat-value">{Math.round(teamStats.callCount.avg).toLocaleString()}</span>
                   </div>
                   <div className="team-stat-item">
@@ -435,34 +435,11 @@ function App() {
               <h3 className="sidebar-title">📅 Güncelleme Bilgisi</h3>
               <div className="update-info">
                 <p className="update-date">Son Güncelleme: {new Date().toLocaleDateString('tr-TR')}</p>
-                <p className="update-period">Temmuz 2024 Verileri</p>
+                <p className="update-period">Temmuz 2025 Verileri</p>
               </div>
             </div>
 
-            <div className="sidebar-section">
-              <h3 className="sidebar-title">ℹ️ Hakkında</h3>
-              <div className="about-info">
-                <p>Bu dashboard, temsilci performanslarını başarı endeksi algoritması ile değerlendirir.</p>
-                <div className="metric-info">
-                  <div className="metric-item">
-                    <span className="metric-label">Audit Skoru:</span>
-                    <span className="metric-desc">%30 ağırlık</span>
-                  </div>
-                  <div className="metric-item">
-                    <span className="metric-label">CSAT:</span>
-                    <span className="metric-desc">%30 ağırlık</span>
-                  </div>
-                  <div className="metric-item">
-                    <span className="metric-label">Çağrı Adedi:</span>
-                    <span className="metric-desc">%20 ağırlık</span>
-                  </div>
-                  <div className="metric-item">
-                    <span className="metric-label">Konuşma Süresi:</span>
-                    <span className="metric-desc">%20 ağırlık</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+
           </div>
         </div>
       </div>
