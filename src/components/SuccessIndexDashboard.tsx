@@ -71,16 +71,16 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
   };
 
   const getCallCountPerformance = (count: number): { label: string; color: string } => {
-    if (count >= 800) return { label: 'Mükemmel', color: '#28a745' };
-    if (count >= 600) return { label: 'İyi', color: '#ffc107' };
-    if (count >= 400) return { label: 'Orta', color: '#fd7e14' };
+    if (count >= 700) return { label: 'Mükemmel', color: '#28a745' };
+    if (count >= 500) return { label: 'İyi', color: '#ffc107' };
+    if (count >= 300) return { label: 'Orta', color: '#fd7e14' };
     return { label: 'Geliştirilmeli', color: '#dc3545' };
   };
 
   const getCallDurationPerformance = (duration: number): { label: string; color: string } => {
-    if (duration <= 300) return { label: 'Mükemmel', color: '#28a745' };
+    if (duration <= 350) return { label: 'Mükemmel', color: '#28a745' };
     if (duration <= 450) return { label: 'İyi', color: '#ffc107' };
-    if (duration <= 600) return { label: 'Orta', color: '#fd7e14' };
+    if (duration <= 550) return { label: 'Orta', color: '#fd7e14' };
     return { label: 'Geliştirilmeli', color: '#dc3545' };
   };
 
