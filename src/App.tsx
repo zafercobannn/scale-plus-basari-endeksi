@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import SuccessIndexDashboard from './components/SuccessIndexDashboard';
 import { RepresentativeData } from './types';
-import { calculateSuccessIndex } from './utils/calculations';
+import { calculateSuccessIndex, calculateTeamStats } from './utils/calculations';
 import RepresentativeImage from './components/RepresentativeImage';
 
 function App() {
@@ -328,11 +328,12 @@ function App() {
   // 1. olan kişiyi bul
   const calculatedData = calculateSuccessIndex(representatives);
   const topPerformer = calculatedData.length > 0 ? calculatedData[0] : null;
+  const teamStats = calculateTeamStats(representatives);
 
   return (
     <div className="App">
       <div className="main-container">
-        {/* Sol Sidebar - Şampiyon Kartı */}
+        {/* Sol Sidebar - Sadece Şampiyon Kartı */}
         <div className="left-sidebar">
           {topPerformer && (
             <div className="champion-card">
@@ -357,16 +358,43 @@ function App() {
           )}
         </div>
 
-        {/* Ana İçerik */}
+        {/* Orta Alan - Sadece Tablo */}
         <div className="content-area">
-          <SuccessIndexDashboard representatives={representatives} />
+          <div className="table-only-container">
+            <SuccessIndexDashboard representatives={representatives} />
+          </div>
         </div>
 
-        {/* Sağ Sidebar */}
+        {/* Sağ Sidebar - İstatistikler ve Diğer Bilgiler */}
         <div className="sidebar">
           <div className="sidebar-content">
+            {/* Takım İstatistikleri */}
+            {teamStats && (
+              <div className="sidebar-section">
+                <h3 className="sidebar-title">📊 Takım İstatistikleri</h3>
+                <div className="team-stats-sidebar">
+                  <div className="team-stat-item">
+                    <span className="team-stat-label">Toplam Çağrı Adedi</span>
+                    <span className="team-stat-value">{Math.round(teamStats.callCount.avg).toLocaleString()}</span>
+                  </div>
+                  <div className="team-stat-item">
+                    <span className="team-stat-label">Ortalama Konuşma Süresi</span>
+                    <span className="team-stat-value">{teamStats.callDuration.avg.toFixed(1)} sn</span>
+                  </div>
+                  <div className="team-stat-item">
+                    <span className="team-stat-label">Audit Ortalaması</span>
+                    <span className="team-stat-value">{teamStats.auditScore.avg.toFixed(1)}</span>
+                  </div>
+                  <div className="team-stat-item">
+                    <span className="team-stat-label">CSAT Ortalaması</span>
+                    <span className="team-stat-value">{teamStats.csatScore.avg.toFixed(2)}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="sidebar-section">
-              <h3 className="sidebar-title">📊 Hızlı İstatistikler</h3>
+              <h3 className="sidebar-title">📈 Hızlı İstatistikler</h3>
               <div className="quick-stats">
                 <div className="quick-stat-item">
                   <span className="quick-stat-label">Toplam Temsilci</span>

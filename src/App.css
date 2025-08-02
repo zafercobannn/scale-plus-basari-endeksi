@@ -80,6 +80,11 @@
   padding: 2rem;
 }
 
+.table-only-container {
+  width: 100%;
+  height: 100%;
+}
+
 /* Left Sidebar - Champion Card */
 .left-sidebar {
   width: 320px;
@@ -332,6 +337,37 @@
 .metric-desc {
   color: #6c757d;
   font-size: 0.8rem;
+}
+
+/* Team Stats Sidebar */
+.team-stats-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.team-stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.team-stat-label {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.team-stat-value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #ffd700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Responsive Design */
