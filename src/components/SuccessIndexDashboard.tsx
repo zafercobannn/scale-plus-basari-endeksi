@@ -68,6 +68,12 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
     return '#dc3545'; // Kırmızı
   };
 
+  const getSuccessIndexColor = (score: number): string => {
+    if (score >= 85) return '#609966'; // En iyi - yeşil
+    if (score >= 70) return '#FCE38A'; // Orta - sarı
+    return '#E84545'; // Düşük - kırmızı
+  };
+
   const getAuditScoreColor = (score: number): string => {
     if (score >= 90) return '#28a745'; // Yeşil
     if (score >= 80) return '#ffc107'; // Sarı
@@ -224,7 +230,12 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
                 </td>
                 <td>
                   <div className="success-index-cell">
-                    <span className="success-value">
+                    <span 
+                      className="success-value"
+                      style={{ 
+                        color: getSuccessIndexColor(isNaN(item.successIndex) ? 0 : item.successIndex * 100)
+                      }}
+                    >
                       {isNaN(item.successIndex) ? '0.0' : (item.successIndex * 100).toFixed(1)}
                     </span>
                     <div className="progress-bar">
