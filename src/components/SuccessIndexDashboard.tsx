@@ -198,7 +198,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
       {/* Footer Notes */}
       <div className="footer-notes">
         <p>Başarı endeksi 0-1 arasında normalize edilmiştir. Daha yüksek değer daha iyi performansı gösterir.</p>
-        <p>Başarı endeksi, canlıya alınan hesap sayısı, audit puanı, anket sonucu ve kalite değerlendirme metriklerinin takım ortalamasına göre değerlendirilmesi ile hesaplanmıştır.</p>
+        <p>Başarı endeksi, çağrı adedi, ortalama konuşma süresi, audit puanı ve çağrı değerlendirme (CSAT) metriklerinin takım ortalamasına göre değerlendirilmesi ile hesaplanmıştır.</p>
         <p>Aylık değerler, her temsilcinin mevcut tüm ay verileri üzerinden hesaplanmıştır.</p>
       </div>
 
