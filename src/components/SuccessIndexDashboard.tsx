@@ -49,12 +49,12 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
     }
   };
 
-  const getRankEmoji = (rank: number): string => {
+  const getRankDisplay = (rank: number): string => {
     switch (rank) {
       case 1: return '🥇';
       case 2: return '🥈';
       case 3: return '🥉';
-      default: return '';
+      default: return `${rank}.`;
     }
   };
 
@@ -153,7 +153,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
                     className="rank-badge"
                     style={{ backgroundColor: getRankColor(item.rank) }}
                   >
-                    {getRankEmoji(item.rank)}
+                    {getRankDisplay(item.rank)}
                   </div>
                 </td>
                 <td className="representative-name">
