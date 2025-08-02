@@ -120,26 +120,27 @@ export const calculateTeamStats = (data: RepresentativeData[]) => {
   const auditScores = parsedData.map(d => d.auditScore);
   const csatScores = parsedData.map(d => d.csatScore);
 
+  // Sabit takım ortalamaları
   return {
     callCount: {
       min: Math.min(...callCounts),
       max: Math.max(...callCounts),
-      avg: callCounts.reduce((a, b) => a + b, 0) / callCounts.length
+      avg: 415 // Sabit değer: Çağrı adet ort
     },
     callDuration: {
       min: Math.min(...callDurations),
       max: Math.max(...callDurations),
-      avg: callDurations.reduce((a, b) => a + b, 0) / callDurations.length
+      avg: 459.24 // Sabit değer: Ortalama konuşma süresi
     },
     auditScore: {
       min: Math.min(...auditScores),
       max: Math.max(...auditScores),
-      avg: auditScores.reduce((a, b) => a + b, 0) / auditScores.length
+      avg: 76.85 // Sabit değer: Audit
     },
     csatScore: {
       min: Math.min(...csatScores),
       max: Math.max(...csatScores),
-      avg: csatScores.reduce((a, b) => a + b, 0) / csatScores.length
+      avg: 4.88 // Sabit değer: CSAT
     }
   };
 };
