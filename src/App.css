@@ -61,77 +61,7 @@
   background: #5855eb;
 } 
 
-/* Top Performer Section Styles */
-.top-performer-section {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem;
-  margin-bottom: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
 
-.top-performer-card {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  max-width: 800px;
-  margin: 0 auto;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.top-performer-image {
-  flex-shrink: 0;
-}
-
-.top-performer-info {
-  flex: 1;
-}
-
-.top-performer-name {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #2c3e50;
-  margin: 0 0 0.5rem 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.top-performer-title {
-  font-size: 1.3rem;
-  color: #e74c3c;
-  font-weight: 600;
-  margin: 0 0 1.5rem 0;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.top-performer-stats {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-
-.stat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.25rem;
-}
-
-.stat-label {
-  font-size: 0.9rem;
-  color: #7f8c8d;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.stat-value {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #2c3e50;
-}
 
 /* Main Container Layout */
 .main-container {
@@ -139,13 +69,89 @@
   min-height: 100vh;
   gap: 2rem;
   padding: 1rem;
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
 }
 
 .content-area {
   flex: 1;
   min-width: 0; /* Prevents flex item from overflowing */
+}
+
+/* Left Sidebar - Champion Card */
+.left-sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  height: fit-content;
+  position: sticky;
+  top: 1rem;
+}
+
+.champion-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  color: white;
+  text-align: center;
+}
+
+.champion-image {
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.champion-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.champion-name {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.champion-title {
+  font-size: 1rem;
+  color: #ffd700;
+  font-weight: 600;
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.champion-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.champion-stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.champion-stat-label {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+}
+
+.champion-stat-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffd700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Sidebar Styles */
@@ -324,10 +330,20 @@
 }
 
 /* Responsive Design */
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
   .main-container {
     flex-direction: column;
     gap: 1rem;
+  }
+  
+  .left-sidebar {
+    width: 100%;
+    position: static;
+  }
+  
+  .champion-card {
+    max-width: 500px;
+    margin: 0 auto;
   }
   
   .sidebar {
@@ -360,25 +376,11 @@
     min-width: auto;
   }
   
-  .top-performer-card {
-    flex-direction: column;
-    text-align: center;
-    gap: 1.5rem;
+  .champion-name {
+    font-size: 1.5rem;
   }
   
-  .top-performer-name {
-    font-size: 2rem;
-  }
-  
-  .top-performer-title {
-    font-size: 1.1rem;
-  }
-  
-  .top-performer-stats {
-    justify-content: center;
-  }
-  
-  .stat-item {
-    align-items: center;
+  .champion-title {
+    font-size: 0.9rem;
   }
 } 

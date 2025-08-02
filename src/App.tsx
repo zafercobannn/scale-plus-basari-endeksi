@@ -332,32 +332,33 @@ function App() {
   return (
     <div className="App">
       <div className="main-container">
-        <div className="content-area">
-          {/* 1. olan kişi için özel bölüm */}
+        {/* Sol Sidebar - Şampiyon Kartı */}
+        <div className="left-sidebar">
           {topPerformer && (
-            <div className="top-performer-section">
-              <div className="top-performer-card">
-                <div className="top-performer-image">
-                  <RepresentativeImage name={topPerformer.name} size="large" />
-                </div>
-                <div className="top-performer-info">
-                  <h2 className="top-performer-name">{topPerformer.name}</h2>
-                  <p className="top-performer-title">Temmuz Ayı Başarı Endeksi Şampiyonu! 🏆</p>
-                  <div className="top-performer-stats">
-                    <div className="stat-item">
-                      <span className="stat-label">Başarı Endeksi:</span>
-                      <span className="stat-value">{(topPerformer.successIndex * 100).toFixed(2)}%</span>
-                    </div>
-                    <div className="stat-item">
-                      <span className="stat-label">Sıralama:</span>
-                      <span className="stat-value">#{topPerformer.rank}</span>
-                    </div>
+            <div className="champion-card">
+              <div className="champion-image">
+                <RepresentativeImage name={topPerformer.name} size="large" />
+              </div>
+              <div className="champion-info">
+                <h2 className="champion-name">{topPerformer.name}</h2>
+                <p className="champion-title">Temmuz Ayı Başarı Endeksi Şampiyonu! 🏆</p>
+                <div className="champion-stats">
+                  <div className="champion-stat-item">
+                    <span className="champion-stat-label">Başarı Endeksi:</span>
+                    <span className="champion-stat-value">{(topPerformer.successIndex * 100).toFixed(2)}%</span>
+                  </div>
+                  <div className="champion-stat-item">
+                    <span className="champion-stat-label">Sıralama:</span>
+                    <span className="champion-stat-value">#{topPerformer.rank}</span>
                   </div>
                 </div>
               </div>
             </div>
           )}
+        </div>
 
+        {/* Ana İçerik */}
+        <div className="content-area">
           <SuccessIndexDashboard representatives={representatives} />
         </div>
 
