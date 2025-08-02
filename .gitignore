@@ -20,4 +20,7 @@
 
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log* 
+yarn-error.log*
+
+# Representative photos (too large for Git)
+public/images/representatives/*.png 
