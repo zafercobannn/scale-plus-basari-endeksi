@@ -331,32 +331,112 @@ function App() {
 
   return (
     <div className="App">
-      {/* 1. olan kişi için özel bölüm */}
-      {topPerformer && (
-        <div className="top-performer-section">
-          <div className="top-performer-card">
-            <div className="top-performer-image">
-              <RepresentativeImage name={topPerformer.name} size="large" />
-            </div>
-            <div className="top-performer-info">
-              <h2 className="top-performer-name">{topPerformer.name}</h2>
-              <p className="top-performer-title">Temmuz Ayı Başarı Endeksi Şampiyonu! 🏆</p>
-              <div className="top-performer-stats">
-                <div className="stat-item">
-                  <span className="stat-label">Başarı Endeksi:</span>
-                  <span className="stat-value">{(topPerformer.successIndex * 100).toFixed(2)}%</span>
+      <div className="main-container">
+        <div className="content-area">
+          {/* 1. olan kişi için özel bölüm */}
+          {topPerformer && (
+            <div className="top-performer-section">
+              <div className="top-performer-card">
+                <div className="top-performer-image">
+                  <RepresentativeImage name={topPerformer.name} size="large" />
                 </div>
-                <div className="stat-item">
-                  <span className="stat-label">Sıralama:</span>
-                  <span className="stat-value">#{topPerformer.rank}</span>
+                <div className="top-performer-info">
+                  <h2 className="top-performer-name">{topPerformer.name}</h2>
+                  <p className="top-performer-title">Temmuz Ayı Başarı Endeksi Şampiyonu! 🏆</p>
+                  <div className="top-performer-stats">
+                    <div className="stat-item">
+                      <span className="stat-label">Başarı Endeksi:</span>
+                      <span className="stat-value">{(topPerformer.successIndex * 100).toFixed(2)}%</span>
+                    </div>
+                    <div className="stat-item">
+                      <span className="stat-label">Sıralama:</span>
+                      <span className="stat-value">#{topPerformer.rank}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <SuccessIndexDashboard representatives={representatives} />
+        </div>
+
+        {/* Sağ Sidebar */}
+        <div className="sidebar">
+          <div className="sidebar-content">
+            <div className="sidebar-section">
+              <h3 className="sidebar-title">📊 Hızlı İstatistikler</h3>
+              <div className="quick-stats">
+                <div className="quick-stat-item">
+                  <span className="quick-stat-label">Toplam Temsilci</span>
+                  <span className="quick-stat-value">{representatives.length}</span>
+                </div>
+                <div className="quick-stat-item">
+                  <span className="quick-stat-label">Aktif Temsilci</span>
+                  <span className="quick-stat-value">{representatives.filter(r => r["Audit Skoru"] !== "N/A").length}</span>
+                </div>
+                <div className="quick-stat-item">
+                  <span className="quick-stat-label">Ortalama Audit</span>
+                  <span className="quick-stat-value">
+                    {(representatives
+                      .filter(r => r["Audit Skoru"] !== "N/A")
+                      .reduce((sum, r) => sum + Number(r["Audit Skoru"]), 0) / 
+                      representatives.filter(r => r["Audit Skoru"] !== "N/A").length).toFixed(1)}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="sidebar-section">
+              <h3 className="sidebar-title">🏆 En İyi Performanslar</h3>
+              <div className="top-performances">
+                {calculatedData.slice(0, 3).map((rep, index) => (
+                  <div key={rep.name} className="top-performance-item">
+                    <div className="performance-rank">#{rep.rank}</div>
+                    <div className="performance-info">
+                      <div className="performance-name">{rep.name}</div>
+                      <div className="performance-score">{(rep.successIndex * 100).toFixed(1)}%</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="sidebar-section">
+              <h3 className="sidebar-title">📅 Güncelleme Bilgisi</h3>
+              <div className="update-info">
+                <p className="update-date">Son Güncelleme: {new Date().toLocaleDateString('tr-TR')}</p>
+                <p className="update-period">Temmuz 2024 Verileri</p>
+              </div>
+            </div>
+
+            <div className="sidebar-section">
+              <h3 className="sidebar-title">ℹ️ Hakkında</h3>
+              <div className="about-info">
+                <p>Bu dashboard, temsilci performanslarını başarı endeksi algoritması ile değerlendirir.</p>
+                <div className="metric-info">
+                  <div className="metric-item">
+                    <span className="metric-label">Audit Skoru:</span>
+                    <span className="metric-desc">%30 ağırlık</span>
+                  </div>
+                  <div className="metric-item">
+                    <span className="metric-label">CSAT:</span>
+                    <span className="metric-desc">%30 ağırlık</span>
+                  </div>
+                  <div className="metric-item">
+                    <span className="metric-label">Çağrı Adedi:</span>
+                    <span className="metric-desc">%20 ağırlık</span>
+                  </div>
+                  <div className="metric-item">
+                    <span className="metric-label">Konuşma Süresi:</span>
+                    <span className="metric-desc">%20 ağırlık</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      )}
-
-      <SuccessIndexDashboard representatives={representatives} />
+      </div>
     </div>
   );
 }
