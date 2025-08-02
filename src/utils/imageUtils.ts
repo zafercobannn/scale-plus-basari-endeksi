@@ -14,7 +14,7 @@ export const getRepresentativeImage = (name: string): string => {
     .replace(/\s+/g, '_')
     .replace(/[^a-z0-9_]/g, '');
   
-  return `/images/representatives/${cleanName}.png`;
+  return `${process.env.PUBLIC_URL}/images/representatives/${cleanName}.png`;
 };
 
 /**
@@ -33,5 +33,5 @@ export const checkImageExists = (imageUrl: string): Promise<boolean> => {
  * Varsayılan avatar URL'si
  */
 export const getDefaultAvatar = (): string => {
-  return '/images/representatives/default.png';
+  return `${process.env.PUBLIC_URL}/images/representatives/default.png`;
 }; 
