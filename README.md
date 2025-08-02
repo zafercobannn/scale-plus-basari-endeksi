@@ -65,4 +65,4 @@ npm start
 
 ## Geliştirici
 
-Bu proje Customer Success performans değerlendirmesi için geliştirilmiştir. 
+Bu proje Customer Success performans değerlendirmesi için geliştirilmiştir. # Deploy trigger
