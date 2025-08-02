@@ -102,6 +102,13 @@
   box-sizing: border-box;
 }
 
+/* MacBook Air 13" için tablo container optimizasyonu */
+@media (max-width: 1599px) and (min-width: 1400px) {
+  .table-container {
+    padding: 0 12px 24px 4px;
+  }
+}
+
 .dashboard-table {
   width: 100%;
   border-collapse: collapse;
@@ -343,8 +350,8 @@
 
 /* Responsive Design */
 
-/* Large Desktop (1400px+) */
-@media (min-width: 1400px) {
+/* Large Desktop (1600px+) */
+@media (min-width: 1600px) {
   .dashboard-header {
     padding: 28px 40px;
   }
@@ -373,6 +380,56 @@
   
   .stat-label {
     font-size: 16px;
+  }
+}
+
+/* MacBook Air 13" and similar (1400px - 1599px) */
+@media (max-width: 1599px) and (min-width: 1400px) {
+  .dashboard-header {
+    padding: 24px 32px;
+  }
+  
+  .header-left h1 {
+    font-size: 28px;
+  }
+  
+  .team-stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  
+  .stat-card {
+    padding: 20px;
+  }
+  
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .stat-value {
+    font-size: 24px;
+  }
+  
+  .stat-label {
+    font-size: 14px;
+  }
+  
+  .dashboard-table {
+    font-size: 13px;
+  }
+  
+  .dashboard-table th,
+  .dashboard-table td {
+    padding: 12px 8px;
+  }
+  
+  .success-index-cell {
+    min-width: 160px;
+  }
+  
+  .representative-name {
+    font-size: 13px;
   }
 }
 

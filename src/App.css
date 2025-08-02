@@ -383,8 +383,8 @@
 
 /* Responsive Design */
 
-/* Large Desktop (1400px+) */
-@media (min-width: 1400px) {
+/* Large Desktop (1600px+) */
+@media (min-width: 1600px) {
   .main-container {
     gap: 0;
   }
@@ -395,6 +395,45 @@
   
   .sidebar {
     width: 380px;
+  }
+}
+
+/* MacBook Air 13" and similar (1400px - 1599px) */
+@media (max-width: 1599px) and (min-width: 1400px) {
+  .main-container {
+    gap: 0;
+  }
+  
+  .left-sidebar {
+    width: 300px;
+  }
+  
+  .sidebar {
+    width: 320px;
+  }
+  
+  .content-area {
+    padding: 1.5rem;
+  }
+  
+  .champion-card {
+    padding: 1.5rem;
+  }
+  
+  .champion-name {
+    font-size: 1.6rem;
+  }
+  
+  .champion-title {
+    font-size: 0.9rem;
+  }
+  
+  .sidebar-section {
+    padding: 0.7rem;
+  }
+  
+  .sidebar-title {
+    font-size: 0.95rem;
   }
 }
 
