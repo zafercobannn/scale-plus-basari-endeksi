@@ -211,6 +211,26 @@
   transition: width 0.3s ease;
 }
 
+/* Metric Cell */
+.metric-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metric-value {
+  font-weight: 600;
+  color: #212529;
+  font-size: 14px;
+}
+
+.performance-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 /* Audit Score */
 .audit-score {
   display: inline-block;

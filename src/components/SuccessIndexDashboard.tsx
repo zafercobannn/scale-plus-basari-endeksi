@@ -61,6 +61,20 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
     return '#dc3545'; // Kırmızı
   };
 
+  const getCallCountPerformance = (count: number): { label: string; color: string } => {
+    if (count >= 800) return { label: 'Mükemmel', color: '#28a745' };
+    if (count >= 600) return { label: 'İyi', color: '#ffc107' };
+    if (count >= 400) return { label: 'Orta', color: '#fd7e14' };
+    return { label: 'Geliştirilmeli', color: '#dc3545' };
+  };
+
+  const getCallDurationPerformance = (duration: number): { label: string; color: string } => {
+    if (duration <= 300) return { label: 'Mükemmel', color: '#28a745' };
+    if (duration <= 450) return { label: 'İyi', color: '#ffc107' };
+    if (duration <= 600) return { label: 'Orta', color: '#fd7e14' };
+    return { label: 'Geliştirilmeli', color: '#dc3545' };
+  };
+
   const handleRowClick = (representative: CalculatedRepresentative) => {
     setSelectedRepresentative(representative);
     setIsModalOpen(true);
@@ -155,8 +169,28 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
                     </div>
                   </div>
                 </td>
-                <td>{item.callCount} adet</td>
-                <td>{item.callDuration} saniye</td>
+                <td>
+                  <div className="metric-cell">
+                    <span className="metric-value">{item.callCount} adet</span>
+                    <span 
+                      className="performance-label"
+                      style={{ color: getCallCountPerformance(item.callCount).color }}
+                    >
+                      {getCallCountPerformance(item.callCount).label}
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <div className="metric-cell">
+                    <span className="metric-value">{item.callDuration} saniye</span>
+                    <span 
+                      className="performance-label"
+                      style={{ color: getCallDurationPerformance(item.callDuration).color }}
+                    >
+                      {getCallDurationPerformance(item.callDuration).label}
+                    </span>
+                  </div>
+                </td>
                 <td>
                   <div 
                     className="audit-score"
