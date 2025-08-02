@@ -49,6 +49,15 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
     }
   };
 
+  const getRankEmoji = (rank: number): string => {
+    switch (rank) {
+      case 1: return '🥇';
+      case 2: return '🥈';
+      case 3: return '🥉';
+      default: return '';
+    }
+  };
+
   const getProgressBarColor = (value: number): string => {
     if (value >= 0.8) return '#28a745'; // Yeşil
     if (value >= 0.6) return '#ffc107'; // Sarı
@@ -144,7 +153,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
                     className="rank-badge"
                     style={{ backgroundColor: getRankColor(item.rank) }}
                   >
-                    {item.rank}
+                    {getRankEmoji(item.rank)}{item.rank}.
                   </div>
                 </td>
                 <td className="representative-name">
@@ -169,28 +178,8 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
                     </div>
                   </div>
                 </td>
-                <td>
-                  <div className="metric-cell">
-                    <span className="metric-value">{item.callCount} adet</span>
-                    <span 
-                      className="performance-label"
-                      style={{ color: getCallCountPerformance(item.callCount).color }}
-                    >
-                      {getCallCountPerformance(item.callCount).label}
-                    </span>
-                  </div>
-                </td>
-                <td>
-                  <div className="metric-cell">
-                    <span className="metric-value">{item.callDuration} saniye</span>
-                    <span 
-                      className="performance-label"
-                      style={{ color: getCallDurationPerformance(item.callDuration).color }}
-                    >
-                      {getCallDurationPerformance(item.callDuration).label}
-                    </span>
-                  </div>
-                </td>
+                <td>{item.callCount} adet</td>
+                <td>{item.callDuration} saniye</td>
                 <td>
                   <div 
                     className="audit-score"
