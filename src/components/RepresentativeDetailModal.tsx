@@ -33,6 +33,20 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
     return 'Geliştirilmeli';
   };
 
+  const getCallCountPerformance = (count: number): { label: string; color: string } => {
+    if (count >= 700) return { label: 'Mükemmel', color: '#28a745' };
+    if (count >= 500) return { label: 'İyi', color: '#ffc107' };
+    if (count >= 300) return { label: 'Orta', color: '#fd7e14' };
+    return { label: 'Geliştirilmeli', color: '#dc3545' };
+  };
+
+  const getCallDurationPerformance = (duration: number): { label: string; color: string } => {
+    if (duration <= 350) return { label: 'Mükemmel', color: '#28a745' };
+    if (duration <= 450) return { label: 'İyi', color: '#ffc107' };
+    if (duration <= 550) return { label: 'Orta', color: '#fd7e14' };
+    return { label: 'Geliştirilmeli', color: '#dc3545' };
+  };
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -73,8 +87,8 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
                 </div>
                 <div className="metric-value">
                   <span className="value">{representative.callCount} adet</span>
-                  <span className="score" style={{ color: getScoreColor(representative.callCountScore * 5) }}>
-                    {getScoreLabel(representative.callCountScore * 5)}
+                  <span className="score" style={{ color: getCallCountPerformance(representative.callCount).color }}>
+                    {getCallCountPerformance(representative.callCount).label}
                   </span>
                 </div>
                 <div className="metric-score">
@@ -99,8 +113,8 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
                 </div>
                 <div className="metric-value">
                   <span className="value">{representative.callDuration} saniye</span>
-                  <span className="score" style={{ color: getScoreColor(representative.callDurationScore * 5) }}>
-                    {getScoreLabel(representative.callDurationScore * 5)}
+                  <span className="score" style={{ color: getCallDurationPerformance(representative.callDuration).color }}>
+                    {getCallDurationPerformance(representative.callDuration).label}
                   </span>
                 </div>
                 <div className="metric-score">
