@@ -68,7 +68,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onClose }) => {
             <h3>🏆 Sıralama</h3>
             <p>
               Temsilciler başarı endekslerine göre sıralanır. En yüksek puana sahip 
-              temsilci 1. sırada yer alır ve "Temmuz Ayı Başarı Endeksi Şampiyonu" 
+              temsilci 1. sırada yer alır ve "Başarı Endeksi Şampiyonu" 
               unvanını kazanır.
             </p>
           </div>
