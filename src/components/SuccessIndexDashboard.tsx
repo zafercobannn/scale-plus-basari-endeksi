@@ -3,6 +3,7 @@ import { RepresentativeData, CalculatedRepresentative } from '../types';
 import { calculateSuccessIndex, debugCalculation } from '../utils/calculations';
 import RepresentativeDetailModal from './RepresentativeDetailModal';
 import RepresentativeImage from './RepresentativeImage';
+import InfoModal from './InfoModal';
 import './SuccessIndexDashboard.css';
 
 interface SuccessIndexDashboardProps {
@@ -13,6 +14,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRepresentative, setSelectedRepresentative] = useState<CalculatedRepresentative | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [currentMonth] = useState(() => {
     const now = new Date();
     const months = [
@@ -69,6 +71,14 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
     setSelectedRepresentative(null);
   };
 
+  const handleInfoButtonClick = () => {
+    setIsInfoModalOpen(true);
+  };
+
+  const handleCloseInfoModal = () => {
+    setIsInfoModalOpen(false);
+  };
+
   return (
     <div className="dashboard">
       {/* Header */}
@@ -81,7 +91,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
           </div>
         </div>
         <div className="header-right">
-          <button className="info-button">
+          <button className="info-button" onClick={handleInfoButtonClick}>
             <i>i</i>
             Bilgi
           </button>
@@ -170,12 +180,16 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
       </div>
 
       {/* Detail Modal */}
-      <RepresentativeDetailModal
-        representative={selectedRepresentative}
-        representatives={representatives}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-      />
+                  <RepresentativeDetailModal
+              representative={selectedRepresentative}
+              representatives={representatives}
+              isOpen={isModalOpen}
+              onClose={handleCloseModal}
+            />
+            <InfoModal
+              isOpen={isInfoModalOpen}
+              onClose={handleCloseInfoModal}
+            />
     </div>
   );
 };
