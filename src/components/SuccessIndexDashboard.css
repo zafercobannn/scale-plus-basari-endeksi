@@ -1,8 +1,10 @@
 .dashboard {
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0;
+  box-shadow: none;
   overflow: hidden;
+  width: 100%;
+  height: 100%;
 }
 
 /* Header Styles */
@@ -13,6 +15,8 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .header-left h1 {
@@ -93,11 +97,15 @@
 /* Table Styles */
 .table-container {
   overflow-x: auto;
+  width: 100%;
+  padding: 0 32px 32px 32px;
+  box-sizing: border-box;
 }
 
 .dashboard-table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 1200px;
   font-size: 14px;
 }
 
@@ -268,13 +276,15 @@
 .team-stats-container {
   padding: 24px 32px;
   background: #f8f9fa;
-  border-bottom: 1px solid #dee2e6;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .team-stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  width: 100%;
 }
 
 .stat-card {
