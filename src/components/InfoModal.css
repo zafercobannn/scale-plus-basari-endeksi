@@ -142,65 +142,279 @@
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+
+/* Large Desktop (1400px+) */
+@media (min-width: 1400px) {
   .info-modal-content {
-    max-width: 95%;
-    margin: 10px;
+    max-width: 1000px;
   }
-
-  .info-modal-header {
-    padding: 16px 20px;
-  }
-
+  
   .info-modal-header h2 {
-    font-size: 20px;
+    font-size: 28px;
   }
-
+  
   .info-modal-body {
+    padding: 40px;
+  }
+  
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  
+  .metric-item {
+    padding: 24px;
+  }
+  
+  .metric-item h4 {
+    font-size: 18px;
+  }
+  
+  .metric-item p {
+    font-size: 15px;
+  }
+}
+
+/* Desktop (1200px - 1399px) */
+@media (max-width: 1399px) and (min-width: 1200px) {
+  .info-modal-content {
+    max-width: 900px;
+  }
+  
+  .info-modal-header h2 {
+    font-size: 26px;
+  }
+  
+  .info-modal-body {
+    padding: 36px;
+  }
+  
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .metric-item {
     padding: 20px;
   }
+  
+  .metric-item h4 {
+    font-size: 17px;
+  }
+  
+  .metric-item p {
+    font-size: 14px;
+  }
+}
 
+/* Small Desktop / Large Tablet (992px - 1199px) */
+@media (max-width: 1199px) and (min-width: 992px) {
+  .info-modal-content {
+    max-width: 850px;
+  }
+  
+  .info-modal-header h2 {
+    font-size: 24px;
+  }
+  
+  .info-modal-body {
+    padding: 32px;
+  }
+  
   .metrics-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
   }
-
+  
   .metric-item {
-    padding: 15px;
+    padding: 18px;
   }
+  
+  .metric-item h4 {
+    font-size: 16px;
+  }
+  
+  .metric-item p {
+    font-size: 13px;
+  }
+}
 
+/* Tablet (768px - 991px) */
+@media (max-width: 991px) and (min-width: 768px) {
+  .info-modal-content {
+    max-width: 90%;
+    margin: 15px;
+  }
+  
+  .info-modal-header {
+    padding: 18px 24px;
+  }
+  
+  .info-modal-header h2 {
+    font-size: 22px;
+  }
+  
+  .info-modal-body {
+    padding: 28px;
+  }
+  
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  .metric-item {
+    padding: 16px;
+  }
+  
+  .metric-item h4 {
+    font-size: 15px;
+  }
+  
+  .metric-item p {
+    font-size: 12px;
+  }
+  
   .info-section h3 {
     font-size: 18px;
   }
-
+  
   .info-section p {
     font-size: 14px;
   }
 }
 
-@media (max-width: 480px) {
+/* Mobile Large (576px - 767px) */
+@media (max-width: 767px) and (min-width: 576px) {
   .info-modal-content {
-    max-width: 98%;
-    margin: 5px;
+    max-width: 95%;
+    margin: 10px;
   }
-
+  
+  .info-modal-header {
+    padding: 16px 20px;
+  }
+  
+  .info-modal-header h2 {
+    font-size: 20px;
+  }
+  
   .info-modal-body {
-    padding: 15px;
+    padding: 24px;
   }
-
+  
   .metrics-grid {
-    gap: 12px;
+    grid-template-columns: 1fr;
+    gap: 14px;
   }
-
+  
   .metric-item {
-    padding: 12px;
+    padding: 14px;
   }
-
+  
   .metric-item h4 {
     font-size: 14px;
   }
-
+  
   .metric-item p {
+    font-size: 11px;
+  }
+  
+  .info-section h3 {
+    font-size: 16px;
+  }
+  
+  .info-section p {
+    font-size: 13px;
+  }
+}
+
+/* Mobile Medium (375px - 575px) */
+@media (max-width: 575px) and (min-width: 375px) {
+  .info-modal-content {
+    max-width: 98%;
+    margin: 8px;
+  }
+  
+  .info-modal-header {
+    padding: 14px 16px;
+  }
+  
+  .info-modal-header h2 {
+    font-size: 18px;
+  }
+  
+  .info-modal-body {
+    padding: 20px;
+  }
+  
+  .metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .metric-item {
+    padding: 12px;
+  }
+  
+  .metric-item h4 {
+    font-size: 13px;
+  }
+  
+  .metric-item p {
+    font-size: 10px;
+  }
+  
+  .info-section h3 {
+    font-size: 15px;
+  }
+  
+  .info-section p {
     font-size: 12px;
+  }
+}
+
+/* Mobile Small (320px - 374px) */
+@media (max-width: 374px) {
+  .info-modal-content {
+    max-width: 99%;
+    margin: 5px;
+  }
+  
+  .info-modal-header {
+    padding: 12px 14px;
+  }
+  
+  .info-modal-header h2 {
+    font-size: 16px;
+  }
+  
+  .info-modal-body {
+    padding: 16px;
+  }
+  
+  .metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .metric-item {
+    padding: 10px;
+  }
+  
+  .metric-item h4 {
+    font-size: 12px;
+  }
+  
+  .metric-item p {
+    font-size: 9px;
+  }
+  
+  .info-section h3 {
+    font-size: 14px;
+  }
+  
+  .info-section p {
+    font-size: 11px;
   }
 } 
