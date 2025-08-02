@@ -42,10 +42,10 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
 
   const getRankColor = (rank: number): string => {
     switch (rank) {
-      case 1: return '#ff6b35'; // Turuncu
-      case 2: return '#6c757d'; // Gri
-      case 3: return '#dc3545'; // Kırmızı
-      default: return '#007bff'; // Mavi
+      case 1: return '#ffd700'; // Altın sarısı
+      case 2: return '#c0c0c0'; // Gümüş
+      case 3: return '#cd7f32'; // Bronz
+      default: return '#6366f1'; // Mor-mavi
     }
   };
 
