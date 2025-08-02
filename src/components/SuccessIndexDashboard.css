@@ -130,6 +130,7 @@
   padding: 16px 12px;
   border-bottom: 1px solid #e9ecef;
   vertical-align: middle;
+  text-align: center;
 }
 
 .dashboard-table td:first-child {
@@ -171,6 +172,7 @@
 .representative-name {
   font-weight: 500;
   color: #212529;
+  text-align: left;
 }
 
 .representative-info {
@@ -262,6 +264,68 @@
   margin-bottom: 0;
 }
 
+/* Team Statistics */
+.team-stats-container {
+  padding: 24px 32px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.team-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
+}
+
+.stat-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #718096;
+  font-weight: 500;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .dashboard-header {
@@ -277,6 +341,29 @@
 
   .search-input {
     width: 150px;
+  }
+
+  .team-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .stat-card {
+    padding: 16px;
+  }
+
+  .stat-icon {
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .stat-value {
+    font-size: 20px;
+  }
+
+  .stat-label {
+    font-size: 12px;
   }
 
   .dashboard-table {
