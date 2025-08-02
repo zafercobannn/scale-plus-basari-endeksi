@@ -11,7 +11,6 @@ interface SuccessIndexDashboardProps {
 }
 
 const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ representatives }) => {
-  const [searchTerm, setSearchTerm] = useState('');
   const [selectedRepresentative, setSelectedRepresentative] = useState<CalculatedRepresentative | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
@@ -37,12 +36,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
     return calculateTeamStats(representatives);
   }, [representatives]);
 
-  const filteredData = useMemo(() => {
-    if (!searchTerm) return calculatedData;
-    return calculatedData.filter(item =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [calculatedData, searchTerm]);
+
 
   const getRankColor = (rank: number): string => {
     switch (rank) {
@@ -128,16 +122,6 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
             <i>i</i>
             Bilgi
           </button>
-          <div className="search-container">
-            <input
-              type="text"
-              placeholder="Temsilci Ara..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="search-input"
-            />
-            <i className="search-icon">🔍</i>
-          </div>
         </div>
       </div>
 
@@ -212,7 +196,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((item) => (
+            {calculatedData.map((item) => (
               <tr key={item.name} onClick={() => handleRowClick(item)} className="clickable-row">
                 <td>
                   <div 
