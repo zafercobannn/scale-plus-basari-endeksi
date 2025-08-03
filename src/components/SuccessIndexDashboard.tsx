@@ -92,7 +92,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
       {/* Header */}
       <div className="dashboard-header">
         <div className="header-left">
-          <h1>🏆 {currentYear} {currentMonth} Customer Success Başarı Endeksi</h1>
+          <h1>{currentYear} {currentMonth} Customer Success Başarı Endeksi</h1>
           <div className="header-info">
             <span>{currentMonth} {currentYear}</span>
             <span>{representatives.length} Temsilci</span>
