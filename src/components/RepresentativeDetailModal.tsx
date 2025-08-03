@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { CalculatedRepresentative, RepresentativeData } from '../types';
 import { calculateTeamStats, formatSeniority } from '../utils/calculations';
 import RepresentativeImage from './RepresentativeImage';
@@ -17,17 +17,6 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
   isOpen,
   onClose
 }) => {
-  const [currentTime, setCurrentTime] = useState(new Date());
-
-  // Her saniye güncelle
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
   if (!isOpen || !representative) return null;
 
   const teamStats = calculateTeamStats(representatives);
@@ -69,7 +58,9 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
               <div className="seniority-info">
                 <h3>Seniority</h3>
                 <p className="seniority-value">{formatSeniority(representative.hireDate)}</p>
-                <p className="hire-date">İşe Giriş: {representative.hireDate}</p>
+                {representative.hireDate && (
+                  <p className="hire-date">İşe Giriş: {representative.hireDate}</p>
+                )}
               </div>
               <p className="representative-rank">
                 {representative.rank === 1 

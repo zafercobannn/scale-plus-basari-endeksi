@@ -52,7 +52,11 @@ export const calculateSeniority = (hireDate: string): { years: number; months: n
 /**
  * Seniority'yi formatlanmış string olarak döndürür
  */
-export const formatSeniority = (hireDate: string): string => {
+export const formatSeniority = (hireDate?: string): string => {
+  if (!hireDate) {
+    return "Bilgi yok";
+  }
+  
   const seniority = calculateSeniority(hireDate);
   
   if (seniority.years > 0) {
@@ -123,7 +127,7 @@ export const calculateSuccessIndex = (data: RepresentativeData[]): CalculatedRep
 
     return {
       name: item.name,
-      hireDate: item.hireDate,
+      hireDate: item.hireDate || undefined,
       rank: 0, // Sıralama daha sonra yapılacak
       successIndex,
       callCount: item.callCount,
