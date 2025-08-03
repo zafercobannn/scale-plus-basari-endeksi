@@ -1,5 +1,5 @@
 import React from 'react';
-import { CalculatedRepresentative, RepresentativeData } from '../types';
+import { CalculatedRepresentative, RepresentativeData, KPIWeights } from '../types';
 import { calculateTeamStats } from '../utils/calculations';
 import RepresentativeImage from './RepresentativeImage';
 import './RepresentativeDetailModal.css';
@@ -7,6 +7,7 @@ import './RepresentativeDetailModal.css';
 interface RepresentativeDetailModalProps {
   representative: CalculatedRepresentative | null;
   representatives: RepresentativeData[];
+  kpiWeights: KPIWeights;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -14,6 +15,7 @@ interface RepresentativeDetailModalProps {
 const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
   representative,
   representatives,
+  kpiWeights,
   isOpen,
   onClose
 }) => {
@@ -83,7 +85,7 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
               <div className="metric-card">
                 <div className="metric-header">
                   <h4>Çağrı Adedi</h4>
-                  <span className="weight">%20 Ağırlık</span>
+                  <span className="weight">%{(kpiWeights.callCount * 100).toFixed(0)} Ağırlık</span>
                 </div>
                 <div className="metric-value">
                   <span className="value">{representative.callCount} adet</span>
@@ -109,7 +111,7 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
               <div className="metric-card">
                 <div className="metric-header">
                   <h4>Ortalama Konuşma Süresi</h4>
-                  <span className="weight">%20 Ağırlık</span>
+                  <span className="weight">%{(kpiWeights.callDuration * 100).toFixed(0)} Ağırlık</span>
                 </div>
                 <div className="metric-value">
                   <span className="value">{representative.callDuration} saniye</span>
@@ -135,7 +137,7 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
               <div className="metric-card">
                 <div className="metric-header">
                   <h4>Audit Skoru</h4>
-                  <span className="weight">%30 Ağırlık</span>
+                  <span className="weight">%{(kpiWeights.auditScore * 100).toFixed(0)} Ağırlık</span>
                 </div>
                 <div className="metric-value">
                   <span className="value">{representative.auditScore}/100</span>
@@ -161,7 +163,7 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
               <div className="metric-card">
                 <div className="metric-header">
                   <h4>Çağrı Değerlendirme (CSAT)</h4>
-                  <span className="weight">%30 Ağırlık</span>
+                  <span className="weight">%{(kpiWeights.csatScore * 100).toFixed(0)} Ağırlık</span>
                 </div>
                 <div className="metric-value">
                   <span className="value">{representative.surveyResult}/5</span>
@@ -190,19 +192,19 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
                <div className="calculation-formula">
                  <div className="formula-line">
                    <span>Çağrı Adedi Puanı:</span>
-                   <span>{representative.callCount} adet (Takım: {teamStats?.callCount.min}-{teamStats?.callCount.max}) → {((representative.callCountScore / 0.2) * 100).toFixed(1)}% × 0.20 = {(representative.callCountScore * 100).toFixed(1)}%</span>
+                   <span>{representative.callCount} adet (Takım: {teamStats?.callCount.min}-{teamStats?.callCount.max}) → {((representative.callCountScore / kpiWeights.callCount) * 100).toFixed(1)}% × {(kpiWeights.callCount * 100).toFixed(0)}% = {(representative.callCountScore * 100).toFixed(1)}%</span>
                  </div>
                  <div className="formula-line">
                    <span>Konuşma Süresi Puanı:</span>
-                   <span>{representative.callDuration} saniye (Takım: {teamStats?.callDuration.min}-{teamStats?.callDuration.max}) → {((representative.callDurationScore / 0.2) * 100).toFixed(1)}% × 0.20 = {(representative.callDurationScore * 100).toFixed(1)}%</span>
+                   <span>{representative.callDuration} saniye (Takım: {teamStats?.callDuration.min}-{teamStats?.callDuration.max}) → {((representative.callDurationScore / kpiWeights.callDuration) * 100).toFixed(1)}% × {(kpiWeights.callDuration * 100).toFixed(0)}% = {(representative.callDurationScore * 100).toFixed(1)}%</span>
                  </div>
                  <div className="formula-line">
                    <span>Audit Skoru Puanı:</span>
-                   <span>{representative.auditScore}/100 (Takım: {teamStats?.auditScore.min}-{teamStats?.auditScore.max}) → {((representative.auditScoreNormalized / 0.3) * 100).toFixed(1)}% × 0.30 = {(representative.auditScoreNormalized * 100).toFixed(1)}%</span>
+                   <span>{representative.auditScore}/100 (Takım: {teamStats?.auditScore.min}-{teamStats?.auditScore.max}) → {((representative.auditScoreNormalized / kpiWeights.auditScore) * 100).toFixed(1)}% × {(kpiWeights.auditScore * 100).toFixed(0)}% = {(representative.auditScoreNormalized * 100).toFixed(1)}%</span>
                  </div>
                  <div className="formula-line">
                    <span>CSAT Puanı:</span>
-                   <span>{representative.surveyResult}/5 (Takım: {teamStats?.csatScore.min}-{teamStats?.csatScore.max}) → {((representative.csatScoreNormalized / 0.3) * 100).toFixed(1)}% × 0.30 = {(representative.csatScoreNormalized * 100).toFixed(1)}%</span>
+                   <span>{representative.surveyResult}/5 (Takım: {teamStats?.csatScore.min}-{teamStats?.csatScore.max}) → {((representative.csatScoreNormalized / kpiWeights.csatScore) * 100).toFixed(1)}% × {(kpiWeights.csatScore * 100).toFixed(0)}% = {(representative.csatScoreNormalized * 100).toFixed(1)}%</span>
                  </div>
                  <div className="formula-total">
                    <span>Başarı Endeksi:</span>

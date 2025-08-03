@@ -1,4 +1,4 @@
-import { RepresentativeData, CalculatedRepresentative } from '../types';
+import { RepresentativeData, CalculatedRepresentative, KPIWeights } from '../types';
 
 /**
  * Virgülle ayrılmış string sayıyı float'a çevirir
@@ -18,9 +18,22 @@ const normalizeValue = (value: number, min: number, max: number): number => {
 };
 
 /**
+ * Varsayılan KPI ağırlıkları
+ */
+export const defaultKPIWeights: KPIWeights = {
+  callCount: 0.2,      // %20
+  callDuration: 0.2,   // %20
+  auditScore: 0.3,     // %30
+  csatScore: 0.3       // %30
+};
+
+/**
  * Başarı endeksi hesaplar
  */
-export const calculateSuccessIndex = (data: RepresentativeData[]): CalculatedRepresentative[] => {
+export const calculateSuccessIndex = (
+  data: RepresentativeData[], 
+  weights: KPIWeights = defaultKPIWeights
+): CalculatedRepresentative[] => {
   if (data.length === 0) return [];
 
   // Verileri parse et - N/A değerlerini filtrele
@@ -54,17 +67,17 @@ export const calculateSuccessIndex = (data: RepresentativeData[]): CalculatedRep
 
   // Her temsilci için puanları hesapla
   const calculatedData: CalculatedRepresentative[] = parsedData.map(item => {
-    // Çağrı adedi puanı (%20) - Daha çok çağrı = Daha iyi puan
-    const callCountScore = normalizeValue(item.callCount, minCallCount, maxCallCount) * 0.2;
+    // Çağrı adedi puanı - Daha çok çağrı = Daha iyi puan
+    const callCountScore = normalizeValue(item.callCount, minCallCount, maxCallCount) * weights.callCount;
 
-    // Konuşma süresi puanı (%20) - Daha kısa süre = Daha iyi puan
-    const callDurationScore = (1 - normalizeValue(item.callDuration, minCallDuration, maxCallDuration)) * 0.2;
+    // Konuşma süresi puanı - Daha kısa süre = Daha iyi puan
+    const callDurationScore = (1 - normalizeValue(item.callDuration, minCallDuration, maxCallDuration)) * weights.callDuration;
 
-    // Audit skoru puanı (%30) - Daha yüksek skor = Daha iyi puan
-    const auditScoreNormalized = normalizeValue(item.auditScore, minAuditScore, maxAuditScore) * 0.3;
+    // Audit skoru puanı - Daha yüksek skor = Daha iyi puan
+    const auditScoreNormalized = normalizeValue(item.auditScore, minAuditScore, maxAuditScore) * weights.auditScore;
 
-    // CSAT puanı (%30) - Daha yüksek skor = Daha iyi puan
-    const csatScoreNormalized = normalizeValue(item.csatScore, minCsatScore, maxCsatScore) * 0.3;
+    // CSAT puanı - Daha yüksek skor = Daha iyi puan
+    const csatScoreNormalized = normalizeValue(item.csatScore, minCsatScore, maxCsatScore) * weights.csatScore;
 
     // Toplam başarı endeksi (0-1 arası)
     const successIndex = callCountScore + callDurationScore + auditScoreNormalized + csatScoreNormalized;

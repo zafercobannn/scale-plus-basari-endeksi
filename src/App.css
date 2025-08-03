@@ -363,19 +363,68 @@
 }
 
 .update-period {
-  font-size: 0.8rem; /* Font boyutunu küçült */
+  color: #6c757d;
+  font-size: 12px;
+  margin: 0;
+}
+
+/* KPI Ayarları Stilleri */
+.kpi-settings-button {
+  background: #6366f1;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.kpi-settings-button:hover {
+  background: #5855eb;
+}
+
+.current-weights {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.weight-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.weight-item span:first-child {
   color: #495057;
   font-weight: 500;
 }
 
-/* About Info */
+.weight-item span:last-child {
+  color: #6366f1;
+  font-weight: 600;
+  background: rgba(99, 102, 241, 0.1);
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
 .about-info {
-  padding: 0.5rem; /* Padding'i geri al */
+  margin-top: 16px;
 }
 
 .about-info p {
-  font-size: 0.85rem; /* Font boyutunu geri al */
-  margin-bottom: 0.6rem;
+  margin: 0 0 8px 0;
+  color: #6c757d;
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 .metric-info {

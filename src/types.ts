@@ -22,4 +22,11 @@ export interface CalculatedRepresentative {
   callDurationScore: number;
   auditScoreNormalized: number;
   csatScoreNormalized: number;
+}
+
+export interface KPIWeights {
+  callCount: number;      // Çağrı Adedi ağırlığı
+  callDuration: number;   // Konuşma Süresi ağırlığı
+  auditScore: number;     // Audit Skoru ağırlığı
+  csatScore: number;      // CSAT ağırlığı
 } 

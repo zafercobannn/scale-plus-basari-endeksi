@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { RepresentativeData, CalculatedRepresentative } from '../types';
+import { RepresentativeData, CalculatedRepresentative, KPIWeights } from '../types';
 import { calculateSuccessIndex, calculateTeamStats, debugCalculation } from '../utils/calculations';
 import RepresentativeDetailModal from './RepresentativeDetailModal';
 import RepresentativeImage from './RepresentativeImage';
@@ -8,9 +8,10 @@ import './SuccessIndexDashboard.css';
 
 interface SuccessIndexDashboardProps {
   representatives: RepresentativeData[];
+  kpiWeights: KPIWeights;
 }
 
-const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ representatives }) => {
+const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ representatives, kpiWeights }) => {
   const [selectedRepresentative, setSelectedRepresentative] = useState<CalculatedRepresentative | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
@@ -18,11 +19,11 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
   const [currentYear] = useState(2025);
 
   const calculatedData = useMemo(() => {
-    const result = calculateSuccessIndex(representatives);
+    const result = calculateSuccessIndex(representatives, kpiWeights);
     // Debug için hesaplama detaylarını yazdır
     debugCalculation(representatives);
     return result;
-  }, [representatives]);
+  }, [representatives, kpiWeights]);
 
   const teamStats = useMemo(() => {
     return calculateTeamStats(representatives);
@@ -236,6 +237,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
                   <RepresentativeDetailModal
               representative={selectedRepresentative}
               representatives={representatives}
+              kpiWeights={kpiWeights}
               isOpen={isModalOpen}
               onClose={handleCloseModal}
             />

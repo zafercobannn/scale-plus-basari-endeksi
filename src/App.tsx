@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import './App.css';
 import SuccessIndexDashboard from './components/SuccessIndexDashboard';
-import { RepresentativeData } from './types';
-import { calculateSuccessIndex } from './utils/calculations';
+import { RepresentativeData, KPIWeights } from './types';
+import { calculateSuccessIndex, defaultKPIWeights } from './utils/calculations';
 import RepresentativeImage from './components/RepresentativeImage';
+import KPISettingsModal from './components/KPISettingsModal';
 
 function App() {
   // Temmuz verileri (gerçek veriler)
@@ -311,13 +312,16 @@ function App() {
   ];
 
   const [representatives] = useState<RepresentativeData[]>(defaultData);
+  const [kpiWeights, setKpiWeights] = useState<KPIWeights>(defaultKPIWeights);
+  const [isKPISettingsOpen, setIsKPISettingsOpen] = useState(false);
 
   // 1. olan kişiyi bul
-  const calculatedData = calculateSuccessIndex(representatives);
+  const calculatedData = calculateSuccessIndex(representatives, kpiWeights);
   const topPerformer = calculatedData.length > 0 ? calculatedData[0] : null;
 
-  // Şampiyon temsilcinin verilerini al
-
+  const handleKPISettingsSave = (newWeights: KPIWeights) => {
+    setKpiWeights(newWeights);
+  };
 
   return (
     <div className="App">
@@ -352,7 +356,7 @@ function App() {
         {/* Orta Alan - Sadece Tablo */}
         <div className="content-area">
           <div className="table-only-container">
-            <SuccessIndexDashboard representatives={representatives} />
+            <SuccessIndexDashboard representatives={representatives} kpiWeights={kpiWeights} />
           </div>
         </div>
 
@@ -360,6 +364,33 @@ function App() {
         <div className="sidebar">
           <div className="sidebar-content">
 
+            <div className="sidebar-section">
+              <h3 className="sidebar-title">⚙️ KPI Ayarları</h3>
+              <button 
+                className="kpi-settings-button"
+                onClick={() => setIsKPISettingsOpen(true)}
+              >
+                Ağırlıkları Düzenle
+              </button>
+              <div className="current-weights">
+                <div className="weight-item">
+                  <span>Çağrı Adedi:</span>
+                  <span>{(kpiWeights.callCount * 100).toFixed(0)}%</span>
+                </div>
+                <div className="weight-item">
+                  <span>Konuşma Süresi:</span>
+                  <span>{(kpiWeights.callDuration * 100).toFixed(0)}%</span>
+                </div>
+                <div className="weight-item">
+                  <span>Audit Skoru:</span>
+                  <span>{(kpiWeights.auditScore * 100).toFixed(0)}%</span>
+                </div>
+                <div className="weight-item">
+                  <span>CSAT:</span>
+                  <span>{(kpiWeights.csatScore * 100).toFixed(0)}%</span>
+                </div>
+              </div>
+            </div>
 
             <div className="sidebar-section">
               <h3 className="sidebar-title">📈 Hızlı İstatistikler</h3>
@@ -406,6 +437,14 @@ function App() {
           </div>
         </div>
       </div>
+
+      {/* KPI Ayarları Modal */}
+      <KPISettingsModal
+        isOpen={isKPISettingsOpen}
+        onClose={() => setIsKPISettingsOpen(false)}
+        onSave={handleKPISettingsSave}
+        currentWeights={kpiWeights}
+      />
     </div>
   );
 }
