@@ -53,31 +53,27 @@ export const calculateSuccessIndex = (
   // Min-max değerleri bul
   const callCounts = parsedData.map(d => d.callCount);
   const callDurations = parsedData.map(d => d.callDuration);
-  const auditScores = parsedData.map(d => d.auditScore);
-  const csatScores = parsedData.map(d => d.csatScore);
 
-  const minCallCount = Math.min(...callCounts);
   const maxCallCount = Math.max(...callCounts);
   const minCallDuration = Math.min(...callDurations);
   const maxCallDuration = Math.max(...callDurations);
-  const minAuditScore = Math.min(...auditScores);
-  const maxAuditScore = Math.max(...auditScores);
-  const minCsatScore = Math.min(...csatScores);
-  const maxCsatScore = Math.max(...csatScores);
 
   // Her temsilci için puanları hesapla
   const calculatedData: CalculatedRepresentative[] = parsedData.map(item => {
-    // Çağrı adedi puanı - Daha çok çağrı = Daha iyi puan
-    const callCountScore = normalizeValue(item.callCount, minCallCount, maxCallCount) * weights.callCount;
+    // Çağrı adedi puanı - En yüksek çağrı adedine göre yüzde hesapla
+    const callCountPercentage = maxCallCount > 0 ? item.callCount / maxCallCount : 0;
+    const callCountScore = callCountPercentage * weights.callCount;
 
     // Konuşma süresi puanı - Daha kısa süre = Daha iyi puan
     const callDurationScore = (1 - normalizeValue(item.callDuration, minCallDuration, maxCallDuration)) * weights.callDuration;
 
-    // Audit skoru puanı - Daha yüksek skor = Daha iyi puan
-    const auditScoreNormalized = normalizeValue(item.auditScore, minAuditScore, maxAuditScore) * weights.auditScore;
+    // Audit skoru puanı - 100 tam puan üzerinden hesapla
+    const auditScorePercentage = item.auditScore / 100;
+    const auditScoreNormalized = auditScorePercentage * weights.auditScore;
 
-    // CSAT puanı - Daha yüksek skor = Daha iyi puan
-    const csatScoreNormalized = normalizeValue(item.csatScore, minCsatScore, maxCsatScore) * weights.csatScore;
+    // CSAT puanı - 5 tam puan üzerinden hesapla
+    const csatScorePercentage = item.csatScore / 5;
+    const csatScoreNormalized = csatScorePercentage * weights.csatScore;
 
     // Toplam başarı endeksi (0-1 arası)
     const successIndex = callCountScore + callDurationScore + auditScoreNormalized + csatScoreNormalized;

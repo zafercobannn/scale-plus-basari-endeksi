@@ -36,9 +36,18 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
   };
 
   const getCallCountPerformance = (count: number): { label: string; color: string } => {
-    if (count >= 700) return { label: 'Mükemmel', color: '#28a745' };
-    if (count >= 500) return { label: 'İyi', color: '#ffc107' };
-    if (count >= 300) return { label: 'Orta', color: '#fd7e14' };
+    // En yüksek çağrı adedini bul
+    const maxCallCount = Math.max(...representatives
+      .filter(r => r["Audit Skoru"] !== "N/A" && r["Çağrı Değerlendirme Ortalaması"] !== "N/A")
+      .map(r => Number(r["Toplam Çağrı Adedi"]) || 0)
+    );
+    
+    // Yüzde hesapla
+    const percentage = maxCallCount > 0 ? (count / maxCallCount) * 100 : 0;
+    
+    if (percentage >= 90) return { label: 'Mükemmel', color: '#28a745' };
+    if (percentage >= 70) return { label: 'İyi', color: '#ffc107' };
+    if (percentage >= 50) return { label: 'Orta', color: '#fd7e14' };
     return { label: 'Geliştirilmeli', color: '#dc3545' };
   };
 
