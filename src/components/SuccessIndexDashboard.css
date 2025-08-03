@@ -47,7 +47,7 @@
   height: 40px;
   width: auto;
   object-fit: contain;
-  filter: brightness(0) invert(1); /* Logo'yu beyaz yapar */
+  /* filter: brightness(0) invert(1); */ /* Logo'yu beyaz yapar - geçici olarak kaldırıldı */
 }
 
 .info-button {
