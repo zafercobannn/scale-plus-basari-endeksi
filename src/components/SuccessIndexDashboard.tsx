@@ -92,25 +92,14 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
       {/* Header */}
       <div className="dashboard-header">
         <div className="header-left">
+          <img 
+            src="/cs-basari-endeksi/ikas-logo.png" 
+            alt="İKAS Logo" 
+            className="ikas-logo"
+          />
           <h1>{currentYear} {currentMonth} Customer Success Başarı Endeksi</h1>
-          <div className="header-info">
-            <span>{currentMonth} {currentYear}</span>
-            <span>{representatives.length} Temsilci</span>
-          </div>
         </div>
-        <div className="header-right">
-          <div className="header-logo">
-            <img 
-              src="/ikas-logo.png" 
-              alt="İKAS Logo" 
-              className="ikas-logo"
-            />
-          </div>
-          <button className="info-button" onClick={handleInfoButtonClick}>
-            <i>i</i>
-            Bilgi
-          </button>
-        </div>
+
       </div>
 
       {/* Team Statistics */}

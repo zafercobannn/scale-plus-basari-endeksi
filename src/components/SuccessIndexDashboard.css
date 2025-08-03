@@ -9,18 +9,26 @@
 
 /* Header Styles */
 .dashboard-header {
-  background: #000000;
-  color: white;
+  background: #F2EFE7;
+  color: #333;
   padding: 24px 32px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
   box-sizing: border-box;
+  border-radius: 12px;
+  margin: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .header-left h1 {
-  margin: 0 0 8px 0;
+  margin: 0;
   font-size: 28px;
   font-weight: 600;
 }
@@ -32,11 +40,7 @@
   opacity: 0.9;
 }
 
-.header-right {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
+
 
 .header-logo {
   display: flex;
@@ -44,44 +48,13 @@
 }
 
 .ikas-logo {
-  height: 40px;
+  height: 50px;
   width: auto;
   object-fit: contain;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-  padding: 4px;
-  background: rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
 }
 
-.info-button {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-}
 
-.info-button:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.info-button i {
-  font-style: normal;
-  font-weight: bold;
-  font-size: 12px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 
 
@@ -550,15 +523,17 @@
     flex-direction: column;
     gap: 16px;
     padding: 18px 20px;
+    margin: 0;
+  }
+  
+  .header-left {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
   }
   
   .header-left h1 {
     font-size: 22px;
-  }
-  
-  .header-right {
-    width: 100%;
-    justify-content: space-between;
   }
   
   .ikas-logo {
@@ -609,6 +584,13 @@
     flex-direction: column;
     gap: 12px;
     padding: 16px;
+    margin: 0;
+  }
+  
+  .header-left {
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
   }
   
   .header-left h1 {
@@ -617,11 +599,6 @@
   
   .header-info {
     font-size: 12px;
-  }
-  
-  .header-right {
-    width: 100%;
-    justify-content: space-between;
   }
   
   .ikas-logo {
@@ -677,6 +654,13 @@
     flex-direction: column;
     gap: 10px;
     padding: 12px;
+    margin: 0;
+  }
+  
+  .header-left {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
   }
   
   .header-left h1 {
@@ -687,19 +671,11 @@
     font-size: 11px;
   }
   
-  .header-right {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
   .ikas-logo {
     height: 28px;
   }
   
-  .info-button {
-    padding: 6px 12px;
-    font-size: 12px;
-  }
+
   
   .team-stats-grid {
     grid-template-columns: 1fr;
@@ -752,6 +728,13 @@
     flex-direction: column;
     gap: 8px;
     padding: 10px;
+    margin: 0;
+  }
+  
+  .header-left {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
   }
   
   .header-left h1 {
@@ -762,21 +745,13 @@
     font-size: 10px;
   }
   
-  .header-right {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
   .ikas-logo {
     height: 25px;
   }
   
 
   
-  .info-button {
-    padding: 5px 10px;
-    font-size: 11px;
-  }
+
   
   .team-stats-grid {
     grid-template-columns: 1fr;

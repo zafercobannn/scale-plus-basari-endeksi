@@ -68,7 +68,7 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
               <h2>{representative.name}</h2>
               <p className="representative-rank">
                 {representative.rank === 1 
-                  ? `Temmuz Ayı Başarı Endeksi Şampiyonu! 🏆`
+                  ? `En yüksek Performans ⭐`
                   : `Başarı Endeksi Sıralaması: ${representative.rank}`
                 }
               </p>

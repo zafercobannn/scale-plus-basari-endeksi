@@ -312,7 +312,20 @@ function App() {
   ];
 
   const [representatives] = useState<RepresentativeData[]>(defaultData);
-  const [kpiWeights, setKpiWeights] = useState<KPIWeights>(defaultKPIWeights);
+  // localStorage'dan kaydedilmiş ağırlıkları al veya default değerleri kullan
+  const getStoredWeights = (): KPIWeights => {
+    const stored = localStorage.getItem('kpiWeights');
+    if (stored) {
+      try {
+        return JSON.parse(stored);
+      } catch (error) {
+        console.error('Stored weights could not be parsed:', error);
+      }
+    }
+    return defaultKPIWeights;
+  };
+
+  const [kpiWeights, setKpiWeights] = useState<KPIWeights>(getStoredWeights);
   const [isKPISettingsOpen, setIsKPISettingsOpen] = useState(false);
 
   // 1. olan kişiyi bul
@@ -321,6 +334,8 @@ function App() {
 
   const handleKPISettingsSave = (newWeights: KPIWeights) => {
     setKpiWeights(newWeights);
+    // Ağırlıkları localStorage'a kaydet
+    localStorage.setItem('kpiWeights', JSON.stringify(newWeights));
   };
 
   return (
@@ -335,7 +350,7 @@ function App() {
               </div>
               <div className="champion-info">
                 <h2 className="champion-name">{topPerformer.name}</h2>
-                <p className="champion-title">Temmuz<br />Başarı Endeksi Şampiyonu! 🏆</p>
+                <p className="champion-title">En Yüksek Performans ⭐</p>
                 <div className="champion-stats">
                   <div className="champion-stat-item">
                     <span className="champion-stat-label">Başarı Endeksi:</span>
@@ -425,13 +440,7 @@ function App() {
               </div>
             </div>
 
-            <div className="sidebar-section">
-              <h3 className="sidebar-title">📅 Güncelleme Bilgisi</h3>
-              <div className="update-info">
-                <p className="update-date">Son Güncelleme: {new Date().toLocaleDateString('tr-TR')}</p>
-                <p className="update-period">Temmuz 2025 Verileri</p>
-              </div>
-            </div>
+
 
 
           </div>
