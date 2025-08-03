@@ -32,10 +32,10 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
 
   const getRankColor = (rank: number): string => {
     switch (rank) {
-      case 1: return '#ffd700'; // Altın sarısı
-      case 2: return '#c0c0c0'; // Gümüş
-      case 3: return '#cd7f32'; // Bronz
-      default: return '#6366f1'; // Mor-mavi
+      case 1: return '#FFD700'; // Altın sarısı
+      case 2: return '#E5E4E2'; // Gümüş
+      case 3: return '#CD7F32'; // Bronz
+      default: return '#4F46E5'; // Modern indigo
     }
   };
 
@@ -49,21 +49,21 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
   };
 
   const getProgressBarColor = (value: number): string => {
-    if (value >= 0.8) return '#28a745'; // Yeşil
-    if (value >= 0.6) return '#ffc107'; // Sarı
-    return '#dc3545'; // Kırmızı
+    if (value >= 0.8) return '#10B981'; // Modern yeşil
+    if (value >= 0.6) return '#F59E0B'; // Modern turuncu
+    return '#EF4444'; // Modern kırmızı
   };
 
   const getSuccessIndexColor = (score: number): string => {
-    if (score >= 85) return '#609966'; // En iyi - yeşil
-    if (score >= 70) return '#FCE38A'; // Orta - sarı
-    return '#E84545'; // Düşük - kırmızı
+    if (score >= 85) return '#111827'; // En iyi - çok koyu gri
+    if (score >= 70) return '#111827'; // Orta - çok koyu gri
+    return '#111827'; // Düşük - çok koyu gri
   };
 
   const getAuditScoreColor = (score: number): string => {
-    if (score >= 90) return '#28a745'; // Yeşil
-    if (score >= 80) return '#ffc107'; // Sarı
-    return '#dc3545'; // Kırmızı
+    if (score >= 90) return '#059669'; // Koyu yeşil
+    if (score >= 80) return '#D97706'; // Turuncu
+    return '#DC2626'; // Koyu kırmızı
   };
 
 
@@ -230,12 +230,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
         </table>
       </div>
 
-      {/* Footer Notes */}
-      <div className="footer-notes">
-        <p>Başarı endeksi 0-100 arasında normalize edilmiştir. Daha yüksek değer daha iyi performansı gösterir.</p>
-        <p>Başarı endeksi, çağrı adedi, ortalama konuşma süresi, audit puanı ve çağrı değerlendirme (CSAT) metriklerinin takım ortalamasına göre değerlendirilmesi ile hesaplanmıştır.</p>
-        <p>Aylık değerler, her temsilcinin mevcut tüm ay verileri üzerinden hesaplanmıştır.</p>
-      </div>
+
 
       {/* Detail Modal */}
                   <RepresentativeDetailModal

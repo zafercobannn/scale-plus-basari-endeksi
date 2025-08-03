@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/cs-basari-endeksi/static/css/main.033ab4d3.css",
+    "main.css": "/cs-basari-endeksi/static/css/main.f5c8347b.css",
     "main.js": "/cs-basari-endeksi/static/js/main.60404a25.js",
     "index.html": "/cs-basari-endeksi/index.html",
-    "main.033ab4d3.css.map": "/cs-basari-endeksi/static/css/main.033ab4d3.css.map",
+    "main.f5c8347b.css.map": "/cs-basari-endeksi/static/css/main.f5c8347b.css.map",
     "main.60404a25.js.map": "/cs-basari-endeksi/static/js/main.60404a25.js.map"
   },
   "entrypoints": [
-    "static/css/main.033ab4d3.css",
+    "static/css/main.f5c8347b.css",
     "static/js/main.60404a25.js"
   ]
 }

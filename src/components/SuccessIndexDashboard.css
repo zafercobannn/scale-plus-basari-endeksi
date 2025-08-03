@@ -9,7 +9,7 @@
 
 /* Header Styles */
 .dashboard-header {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #3498db 100%);
+  background: #000000;
   color: white;
   padding: 24px 32px;
   display: flex;
@@ -93,11 +93,11 @@
 }
 
 .dashboard-table th {
-  background: #f8f9fa;
+  background: #F8FAFC;
   padding: 16px 12px;
   text-align: left;
   font-weight: 600;
-  color: #495057;
+  color: #374151;
   border-bottom: 2px solid #dee2e6;
   position: relative;
 }
@@ -138,7 +138,9 @@
 }
 
 .dashboard-table tbody tr:hover {
-  background: #f8f9fa;
+  background: #F3F4F6;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .clickable-row {
@@ -147,7 +149,9 @@
 }
 
 .clickable-row:hover {
-  background: #e3f2fd !important;
+  background: #E0F2FE !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* Rank Badge */
@@ -192,7 +196,7 @@
 
 .success-value {
   font-weight: 600;
-  color: #000000;
+  color: #111827 !important;
   font-size: 16px;
 }
 
@@ -297,9 +301,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   border-radius: 12px;
   color: white;
+}
+
+/* Tüm istatistik kartları için tek renk düzeni */
+.stat-card:nth-child(1) .stat-icon,
+.stat-card:nth-child(2) .stat-icon,
+.stat-card:nth-child(3) .stat-icon,
+.stat-card:nth-child(4) .stat-icon {
+  background: #F6F6F7;
+  color: #333;
 }
 
 .stat-icon svg {
@@ -348,6 +361,15 @@
   .stat-icon {
     width: 56px;
     height: 56px;
+  }
+  
+  /* Büyük ekranlar için de tek renk düzeni */
+  .stat-card:nth-child(1) .stat-icon,
+  .stat-card:nth-child(2) .stat-icon,
+  .stat-card:nth-child(3) .stat-icon,
+  .stat-card:nth-child(4) .stat-icon {
+    background: #F6F6F7;
+    color: #333;
   }
   
   .stat-value {
