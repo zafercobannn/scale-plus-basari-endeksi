@@ -38,6 +38,18 @@
   align-items: center;
 }
 
+.header-logo {
+  display: flex;
+  align-items: center;
+}
+
+.ikas-logo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1); /* Logo'yu beyaz yapar */
+}
+
 .info-button {
   background: rgba(255, 255, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -546,6 +558,10 @@
     justify-content: space-between;
   }
   
+  .ikas-logo {
+    height: 35px;
+  }
+  
 
   
   .team-stats-grid {
@@ -603,6 +619,10 @@
   .header-right {
     width: 100%;
     justify-content: space-between;
+  }
+  
+  .ikas-logo {
+    height: 30px;
   }
   
 
@@ -669,7 +689,9 @@
     justify-content: space-between;
   }
   
-
+  .ikas-logo {
+    height: 28px;
+  }
   
   .info-button {
     padding: 6px 12px;
@@ -740,6 +762,10 @@
   .header-right {
     width: 100%;
     justify-content: space-between;
+  }
+  
+  .ikas-logo {
+    height: 25px;
   }
   
 

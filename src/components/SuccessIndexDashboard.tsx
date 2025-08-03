@@ -99,6 +99,13 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
           </div>
         </div>
         <div className="header-right">
+          <div className="header-logo">
+            <img 
+              src="/images/representatives/ikas.webp" 
+              alt="İKAS Logo" 
+              className="ikas-logo"
+            />
+          </div>
           <button className="info-button" onClick={handleInfoButtonClick}>
             <i>i</i>
             Bilgi
