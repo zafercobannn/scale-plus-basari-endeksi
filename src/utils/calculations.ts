@@ -18,6 +18,57 @@ const normalizeValue = (value: number, min: number, max: number): number => {
 };
 
 /**
+ * İşe giriş tarihinden itibaren geçen süreyi hesaplar
+ */
+export const calculateSeniority = (hireDate: string): { years: number; months: number; days: number; totalDays: number } => {
+  if (!hireDate) {
+    return { years: 0, months: 0, days: 0, totalDays: 0 };
+  }
+
+  const hire = new Date(hireDate);
+  const now = new Date();
+  
+  if (isNaN(hire.getTime())) {
+    return { years: 0, months: 0, days: 0, totalDays: 0 };
+  }
+
+  const diffTime = Math.abs(now.getTime() - hire.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  // Yıl, ay, gün hesaplama
+  const years = Math.floor(diffDays / 365);
+  const remainingDays = diffDays % 365;
+  const months = Math.floor(remainingDays / 30);
+  const days = remainingDays % 30;
+
+  return {
+    years,
+    months,
+    days,
+    totalDays: diffDays
+  };
+};
+
+/**
+ * Seniority'yi formatlanmış string olarak döndürür
+ */
+export const formatSeniority = (hireDate: string): string => {
+  const seniority = calculateSeniority(hireDate);
+  
+  if (seniority.years > 0) {
+    if (seniority.months > 0) {
+      return `${seniority.years} yıl ${seniority.months} ay`;
+    } else {
+      return `${seniority.years} yıl`;
+    }
+  } else if (seniority.months > 0) {
+    return `${seniority.months} ay`;
+  } else {
+    return `${seniority.days} gün`;
+  }
+};
+
+/**
  * Başarı endeksi hesaplar
  */
 export const calculateSuccessIndex = (data: RepresentativeData[]): CalculatedRepresentative[] => {
@@ -31,6 +82,7 @@ export const calculateSuccessIndex = (data: RepresentativeData[]): CalculatedRep
     )
     .map(item => ({
       name: item["MT Adı"],
+      hireDate: item["İşe Giriş Tarihi"] || "",
       callCount: Number(item["Toplam Çağrı Adedi"]) || 0,
       callDuration: parseCommaNumber(item["Ortalama Konuşma Süresi"]),
       auditScore: Number(item["Audit Skoru"]) || 0,
@@ -71,6 +123,7 @@ export const calculateSuccessIndex = (data: RepresentativeData[]): CalculatedRep
 
     return {
       name: item.name,
+      hireDate: item.hireDate,
       rank: 0, // Sıralama daha sonra yapılacak
       successIndex,
       callCount: item.callCount,
