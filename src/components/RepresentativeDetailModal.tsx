@@ -1,6 +1,6 @@
 import React from 'react';
 import { CalculatedRepresentative, RepresentativeData } from '../types';
-import { calculateTeamStats, formatSeniority } from '../utils/calculations';
+import { calculateTeamStats } from '../utils/calculations';
 import RepresentativeImage from './RepresentativeImage';
 import './RepresentativeDetailModal.css';
 
@@ -55,13 +55,6 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
             <RepresentativeImage name={representative.name} size="large" />
             <div className="representative-title">
               <h2>{representative.name}</h2>
-              <div className="seniority-info">
-                <h3>Seniority</h3>
-                <p className="seniority-value">{formatSeniority(representative.hireDate)}</p>
-                {representative.hireDate && (
-                  <p className="hire-date">İşe Giriş: {representative.hireDate}</p>
-                )}
-              </div>
               <p className="representative-rank">
                 {representative.rank === 1 
                   ? `Temmuz Ayı Başarı Endeksi Şampiyonu! 🏆`

@@ -1,6 +1,5 @@
 export interface RepresentativeData {
   "MT Adı": string;
-  "İşe Giriş Tarihi"?: string;
   "Audit Skoru": number | string;
   "Toplam Çağrı Adedi": number | string;
   "Ortalama Konuşma Süresi": string;
@@ -12,7 +11,6 @@ export interface RepresentativeData {
 
 export interface CalculatedRepresentative {
   name: string;
-  hireDate?: string;
   rank: number;
   successIndex: number;
   callCount: number;
