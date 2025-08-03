@@ -101,7 +101,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
         <div className="header-right">
           <div className="header-logo">
             <img 
-              src="/images/representatives/ikas.webp" 
+              src="/images/representatives/ikas.png" 
               alt="İKAS Logo" 
               className="ikas-logo"
             />
