@@ -154,7 +154,7 @@
 }
 
 .champion-card {
-  background: #F3FFE3;
+  background: #000000;
   border-radius: 15px;
   padding: 2rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
@@ -178,13 +178,13 @@
   font-size: 1.8rem;
   font-weight: 700;
   margin: 0;
-  color: #2c3e50;
+  color: #ffffff;
   text-shadow: none;
 }
 
 .champion-title {
   font-size: 1rem;
-  color: #e74c3c;
+  color: #ff6b6b;
   font-weight: 600;
   margin: 0;
   text-shadow: none;
@@ -202,7 +202,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.9);
   border-radius: 8px;
   border: 1px solid #e9ecef;
 }
