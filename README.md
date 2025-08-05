@@ -1,6 +1,6 @@
-# Customer Success Başarı Endeksi Dashboard
+# Scale Plus Başarı Endeksi Dashboard
 
-Bu proje, Customer Success temsilcilerinin performansını değerlendirmek için kullanılan bir başarı endeksi hesaplama ve görselleştirme uygulamasıdır.
+Bu proje, Scale Plus temsilcilerinin performansını değerlendirmek için kullanılan bir başarı endeksi hesaplama ve görselleştirme uygulamasıdır.
 
 ## Özellikler
 
@@ -14,18 +14,18 @@ Bu proje, Customer Success temsilcilerinin performansını değerlendirmek için
 Başarı endeksi aşağıdaki formülle hesaplanır:
 
 ```
-Başarı Endeksi = (Çağrı Adedi Puanı × 0.20) + 
-                 (Konuşma Süresi Puanı × 0.20) + 
+Başarı Endeksi = (Canlıya Alınan Firma Adedi Puanı × 0.30) + 
                  (Audit Skoru Puanı × 0.30) + 
-                 (CSAT Puanı × 0.30)
+                 (NPS Call Score Puanı × 0.20) + 
+                 (Toplantı Değerlendirmesi Puanı × 0.20)
 ```
 
 ### Metrik Açıklamaları
 
-1. **Çağrı Adedi (%20)**: En yüksek çağrı adedi olan temsilci en yüksek puanı alır
-2. **Ortalama Konuşma Süresi (%20)**: En düşük konuşma süresi olan temsilci en yüksek puanı alır
-3. **Audit Skoru (%30)**: 0-100 arası, en yüksek skor en yüksek puanı alır
-4. **CSAT (%30)**: 0-5 arası, en yüksek skor en yüksek puanı alır
+1. **Canlıya Alınan Firma Adedi (%30)**: Hedefi geçen temsilci %100 puan alır, aksi halde hedef oranına göre puanlanır
+2. **Audit Skoru (%30)**: 0-100 arası, en yüksek skor en yüksek puanı alır
+3. **NPS Call Score (%20)**: 0-5 arası, 5 olan "Mükemmel", diğerleri "İyi" olarak değerlendirilir
+4. **Toplantı Değerlendirmesi (%20)**: 0-5 arası, 5 olan "Mükemmel", diğerleri "İyi" olarak değerlendirilir
 
 ## Kullanım
 
@@ -39,13 +39,11 @@ Başarı Endeksi = (Çağrı Adedi Puanı × 0.20) +
 ```json
 {
   "MT Adı": "Adil Hanedan",
-  "Audit Skoru": 55,
-  "Toplam Çağrı Adedi": 343,
-  "Ortalama Konuşma Süresi": "601,54",
-  "Lokal Kapatma Oranı": "76,68%",
-  "Kaçan Çağrılar": 2,
-  "Çağrı Değerlendirme Ortalaması": "4,81",
-  "Çağrı Değerlendirme Adet": 74
+  "Canlıya Alınan Firma Adedi": 25,
+  "Canlıya Alınan Hesap Sayısı Hedefi": 23,
+  "Audit Skoru": 85,
+  "Onboarding Anket Skoru": 4.7,
+  "Toplantı Değerlendirmesi": 4.5
 }
 ```
 
@@ -65,4 +63,4 @@ npm start
 
 ## Geliştirici
 
-Bu proje Customer Success performans değerlendirmesi için geliştirilmiştir. # Deploy trigger
+Bu proje Scale Plus performans değerlendirmesi için geliştirilmiştir.
