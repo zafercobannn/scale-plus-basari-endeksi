@@ -83,14 +83,16 @@
 .dashboard-table th {
   background: #F8FAFC;
   padding: 16px 12px;
-  text-align: left;
+  text-align: center;
   font-weight: 600;
   color: #374151;
   border-bottom: 2px solid #dee2e6;
   position: relative;
 }
 
-.dashboard-table th:first-child {
+.dashboard-table th:first-child,
+.dashboard-table th:nth-child(2) {
+  text-align: left;
   padding-left: 24px;
 }
 
@@ -112,7 +114,8 @@
   text-align: center;
 }
 
-/* Temsilci isimleri için özel hizalama */
+/* İlk sütun (rank) ve ikinci sütun (temsilci adı) sol hizalı */
+.dashboard-table td:nth-child(1),
 .dashboard-table td:nth-child(2) {
   text-align: left;
 }
@@ -796,4 +799,116 @@
   .table-container {
     padding: 0 6px 12px 6px;
   }
+}
+
+/* Hedef Sütunu Modern Stilleri */
+.target-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 0;
+}
+
+.target-value {
+  font-weight: 600;
+  font-size: 11px;
+  color: #374151;
+  text-align: center;
+}
+
+.target-progress {
+  width: 100%;
+  height: 6px;
+  background-color: #E5E7EB;
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.target-progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease, background-color 0.3s ease;
+  position: relative;
+}
+
+.target-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.target-status {
+  font-size: 9px;
+  font-weight: 500;
+  text-align: center;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Anket Skoru ve Toplantı Değerlendirmesi Modern Stilleri */
+.score-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 4px 0;
+}
+
+.score-value {
+  font-weight: 600;
+  font-size: 11px;
+  color: #374151;
+  text-align: center;
+}
+
+.score-progress {
+  width: 100%;
+  height: 4px;
+  background-color: #E5E7EB;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.score-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease, background-color 0.3s ease;
+  position: relative;
+}
+
+.score-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: scoreShimmer 1.5s infinite;
+}
+
+@keyframes scoreShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.score-label {
+  font-size: 8px;
+  font-weight: 600;
+  text-align: center;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 } 

@@ -23,7 +23,8 @@ const KPISettingsModal: React.FC<KPISettingsModalProps> = ({
   }, [currentWeights]);
 
   useEffect(() => {
-    const total = weights.callCount + weights.callDuration + weights.auditScore + weights.csatScore;
+    const total = weights.callCount + weights.callDuration + weights.auditScore + weights.csatScore + 
+                  weights.liveCompanyCount + weights.onboardingScore + weights.meetingEvaluation;
     setTotalWeight(total);
   }, [weights]);
 
@@ -43,10 +44,14 @@ const KPISettingsModal: React.FC<KPISettingsModalProps> = ({
 
   const handleReset = () => {
     setWeights({
-      callCount: 0.2,
-      callDuration: 0.2,
-      auditScore: 0.3,
-      csatScore: 0.3
+      callCount: 0.0,         // Artık kullanılmıyor
+      callDuration: 0.0,      // Artık kullanılmıyor
+      auditScore: 0.3,        // %30
+      csatScore: 0.0,         // Artık kullanılmıyor
+      // Scale Plus için yeni ağırlıklar
+      liveCompanyCount: 0.3,      // %30 - Canlıya alınan firma adedi
+      onboardingScore: 0.2,       // %20 - Onboarding anket skoru
+      meetingEvaluation: 0.2      // %20 - Toplantı değerlendirmesi
     });
   };
 
@@ -63,13 +68,13 @@ const KPISettingsModal: React.FC<KPISettingsModalProps> = ({
     <div className="kpi-modal-overlay" onClick={onClose}>
       <div className="kpi-modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="kpi-modal-header">
-          <h2>KPI Ağırlık Ayarları</h2>
+          <h2>Scale Plus KPI Ağırlık Ayarları</h2>
           <button className="kpi-close-button" onClick={onClose}>×</button>
         </div>
 
         <div className="kpi-modal-body">
           <div className="kpi-description">
-            <p>Başarı endeksi hesaplamasında kullanılan KPI ağırlıklarını ayarlayın.</p>
+            <p>Scale Plus başarı endeksi hesaplamasında kullanılan KPI ağırlıklarını ayarlayın.</p>
             <p className="kpi-total">
               Toplam Ağırlık: <span style={{ color: totalWeight === 1 ? '#28a745' : '#dc3545', fontWeight: 'bold' }}>
                 {(totalWeight * 100).toFixed(1)}%
@@ -81,11 +86,11 @@ const KPISettingsModal: React.FC<KPISettingsModalProps> = ({
           </div>
 
           <div className="kpi-weights-container">
-            {/* Çağrı Adedi */}
+            {/* Canlıya Alınan Firma Adedi */}
             <div className="kpi-weight-item">
               <div className="kpi-weight-header">
-                <h3>Çağrı Adedi</h3>
-                <span className="kpi-weight-percentage">{(weights.callCount * 100).toFixed(1)}%</span>
+                <h3>Canlıya Alınan Firma Adedi</h3>
+                <span className="kpi-weight-percentage">{(weights.liveCompanyCount * 100).toFixed(1)}%</span>
               </div>
               <div className="kpi-weight-controls">
                 <input
@@ -93,50 +98,21 @@ const KPISettingsModal: React.FC<KPISettingsModalProps> = ({
                   min="0"
                   max="1"
                   step="0.01"
-                  value={weights.callCount}
-                  onChange={(e) => handleWeightChange('callCount', parseFloat(e.target.value))}
-                  style={{ accentColor: getWeightColor(weights.callCount) }}
+                  value={weights.liveCompanyCount}
+                  onChange={(e) => handleWeightChange('liveCompanyCount', parseFloat(e.target.value))}
+                  style={{ accentColor: getWeightColor(weights.liveCompanyCount) }}
                 />
                 <input
                   type="number"
                   min="0"
                   max="1"
                   step="0.01"
-                  value={weights.callCount}
-                  onChange={(e) => handleWeightChange('callCount', parseFloat(e.target.value))}
+                  value={weights.liveCompanyCount}
+                  onChange={(e) => handleWeightChange('liveCompanyCount', parseFloat(e.target.value))}
                   className="kpi-weight-input"
                 />
               </div>
-              <p className="kpi-description-text">Daha çok çağrı = Daha iyi puan</p>
-            </div>
-
-            {/* Konuşma Süresi */}
-            <div className="kpi-weight-item">
-              <div className="kpi-weight-header">
-                <h3>Ortalama Konuşma Süresi</h3>
-                <span className="kpi-weight-percentage">{(weights.callDuration * 100).toFixed(1)}%</span>
-              </div>
-              <div className="kpi-weight-controls">
-                <input
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.01"
-                  value={weights.callDuration}
-                  onChange={(e) => handleWeightChange('callDuration', parseFloat(e.target.value))}
-                  style={{ accentColor: getWeightColor(weights.callDuration) }}
-                />
-                <input
-                  type="number"
-                  min="0"
-                  max="1"
-                  step="0.01"
-                  value={weights.callDuration}
-                  onChange={(e) => handleWeightChange('callDuration', parseFloat(e.target.value))}
-                  className="kpi-weight-input"
-                />
-              </div>
-              <p className="kpi-description-text">Daha kısa süre = Daha iyi puan</p>
+              <p className="kpi-description-text">Daha çok canlıya alınan firma = Daha iyi puan</p>
             </div>
 
             {/* Audit Skoru */}
@@ -168,11 +144,11 @@ const KPISettingsModal: React.FC<KPISettingsModalProps> = ({
               <p className="kpi-description-text">Daha yüksek skor = Daha iyi puan</p>
             </div>
 
-            {/* CSAT */}
+            {/* Onboarding Anket Skoru */}
             <div className="kpi-weight-item">
               <div className="kpi-weight-header">
-                <h3>Çağrı Değerlendirme (CSAT)</h3>
-                <span className="kpi-weight-percentage">{(weights.csatScore * 100).toFixed(1)}%</span>
+                <h3>Onboarding Anket Skoru (NPS CALL)</h3>
+                <span className="kpi-weight-percentage">{(weights.onboardingScore * 100).toFixed(1)}%</span>
               </div>
               <div className="kpi-weight-controls">
                 <input
@@ -180,17 +156,46 @@ const KPISettingsModal: React.FC<KPISettingsModalProps> = ({
                   min="0"
                   max="1"
                   step="0.01"
-                  value={weights.csatScore}
-                  onChange={(e) => handleWeightChange('csatScore', parseFloat(e.target.value))}
-                  style={{ accentColor: getWeightColor(weights.csatScore) }}
+                  value={weights.onboardingScore}
+                  onChange={(e) => handleWeightChange('onboardingScore', parseFloat(e.target.value))}
+                  style={{ accentColor: getWeightColor(weights.onboardingScore) }}
                 />
                 <input
                   type="number"
                   min="0"
                   max="1"
                   step="0.01"
-                  value={weights.csatScore}
-                  onChange={(e) => handleWeightChange('csatScore', parseFloat(e.target.value))}
+                  value={weights.onboardingScore}
+                  onChange={(e) => handleWeightChange('onboardingScore', parseFloat(e.target.value))}
+                  className="kpi-weight-input"
+                />
+              </div>
+              <p className="kpi-description-text">Daha yüksek skor = Daha iyi puan</p>
+            </div>
+
+            {/* Toplantı Değerlendirmesi */}
+            <div className="kpi-weight-item">
+              <div className="kpi-weight-header">
+                <h3>Toplantı Değerlendirmesi</h3>
+                <span className="kpi-weight-percentage">{(weights.meetingEvaluation * 100).toFixed(1)}%</span>
+              </div>
+              <div className="kpi-weight-controls">
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={weights.meetingEvaluation}
+                  onChange={(e) => handleWeightChange('meetingEvaluation', parseFloat(e.target.value))}
+                  style={{ accentColor: getWeightColor(weights.meetingEvaluation) }}
+                />
+                <input
+                  type="number"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={weights.meetingEvaluation}
+                  onChange={(e) => handleWeightChange('meetingEvaluation', parseFloat(e.target.value))}
                   className="kpi-weight-input"
                 />
               </div>

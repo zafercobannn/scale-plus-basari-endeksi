@@ -2,7 +2,22 @@
  * Temsilci adından fotoğraf URL'si oluşturur
  */
 export const getRepresentativeImage = (name: string): string => {
-  // Türkçe karakterleri ve boşlukları temizle
+  // Özel eşleştirmeler
+  const nameMappings: { [key: string]: string } = {
+    'Dilşad Gergin': 'dilsadgergin',
+    'Ahmet Onur': 'ahmetonuryarici',
+    'Tolga Özen Kabasakal': 'tolgaozenkabasakal',
+    'Hüseyin Günder': 'huseyingunder',
+    'Ozan Berk Fettahlı': 'ozanberkfettahli'
+  };
+
+  // Özel eşleştirme varsa onu kullan
+  if (nameMappings[name]) {
+    const baseUrl = process.env.PUBLIC_URL || '';
+    return `${baseUrl}/images/representatives/${nameMappings[name]}.png`;
+  }
+
+  // Genel temizleme mantığı (eski temsilciler için)
   const cleanName = name
     .toLowerCase()
     .replace(/ğ/g, 'g')
@@ -14,11 +29,7 @@ export const getRepresentativeImage = (name: string): string => {
     .replace(/\s+/g, '_')
     .replace(/[^a-z0-9_]/g, '');
   
-  // GitHub Pages için doğru yol
-  const baseUrl = process.env.NODE_ENV === 'production' 
-    ? '/cs-basari-endeksi' 
-    : '/cs-basari-endeksi';
-  
+  const baseUrl = process.env.PUBLIC_URL || '';
   return `${baseUrl}/images/representatives/${cleanName}.png`;
 };
 
@@ -38,10 +49,6 @@ export const checkImageExists = (imageUrl: string): Promise<boolean> => {
  * Varsayılan avatar URL'si
  */
 export const getDefaultAvatar = (): string => {
-  // GitHub Pages için doğru yol
-  const baseUrl = process.env.NODE_ENV === 'production' 
-    ? '/cs-basari-endeksi' 
-    : '/cs-basari-endeksi';
-  
+  const baseUrl = process.env.PUBLIC_URL || '';
   return `${baseUrl}/images/representatives/default.png`;
 }; 

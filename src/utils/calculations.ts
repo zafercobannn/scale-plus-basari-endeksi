@@ -18,13 +18,17 @@ const normalizeValue = (value: number, min: number, max: number): number => {
 };
 
 /**
- * Varsayılan KPI ağırlıkları
+ * Varsayılan KPI ağırlıkları - Scale Plus için güncellendi
  */
 export const defaultKPIWeights: KPIWeights = {
-  callCount: 0.2,      // %20
-  callDuration: 0.2,   // %20
-  auditScore: 0.3,     // %30
-  csatScore: 0.3       // %30
+  callCount: 0.0,         // %0 - Artık kullanılmıyor
+  callDuration: 0.0,      // %0 - Artık kullanılmıyor
+  auditScore: 0.3,        // %30
+  csatScore: 0.0,         // %0 - Artık kullanılmıyor
+  // Scale Plus için yeni ağırlıklar
+  liveCompanyCount: 0.3,      // %30 - Canlıya alınan firma adedi
+  onboardingScore: 0.2,       // %20 - Onboarding anket skoru
+  meetingEvaluation: 0.2      // %20 - Toplantı değerlendirmesi
 };
 
 /**
@@ -36,47 +40,64 @@ export const calculateSuccessIndex = (
 ): CalculatedRepresentative[] => {
   if (data.length === 0) return [];
 
-  // Verileri parse et - N/A değerlerini filtrele
+  // Verileri parse et
   const parsedData = data
     .filter(item => 
       item["Audit Skoru"] !== "N/A" && 
-      item["Çağrı Değerlendirme Ortalaması"] !== "N/A"
+      item["Canlıya Alınan Firma Adedi"] !== undefined &&
+      item["Onboarding Anket Skoru"] !== undefined &&
+      item["Toplantı Değerlendirmesi"] !== undefined
     )
     .map(item => ({
       name: item["MT Adı"],
       callCount: Number(item["Toplam Çağrı Adedi"]) || 0,
       callDuration: parseCommaNumber(item["Ortalama Konuşma Süresi"]),
       auditScore: Number(item["Audit Skoru"]) || 0,
-      csatScore: parseCommaNumber(item["Çağrı Değerlendirme Ortalaması"])
+      csatScore: parseCommaNumber(item["Çağrı Değerlendirme Ortalaması"]),
+      // Scale Plus için yeni alanlar - 0-5'ten 0-100'e normalize et
+      liveCompanyCount: Number(item["Canlıya Alınan Firma Adedi"]) || 0,
+      liveCompanyTarget: Number(item["Canlıya Alınan Hesap Sayısı Hedefi"]) || 23,
+      onboardingScore: (Number(item["Onboarding Anket Skoru"]) || 0) * 20,
+      meetingEvaluation: (Number(item["Toplantı Değerlendirmesi"]) || 0) * 20,
+      // Orijinal değerler (görünüm için)
+      originalOnboardingScore: Number(item["Onboarding Anket Skoru"]) || 0,
+      originalMeetingEvaluation: Number(item["Toplantı Değerlendirmesi"]) || 0
     }));
 
   // Min-max değerleri bul
-  const callCounts = parsedData.map(d => d.callCount);
-  const callDurations = parsedData.map(d => d.callDuration);
+  const liveCompanyCounts = parsedData.map(d => d.liveCompanyCount);
+  const onboardingScores = parsedData.map(d => d.onboardingScore);
+  const meetingEvaluations = parsedData.map(d => d.meetingEvaluation);
 
-  const maxCallCount = Math.max(...callCounts);
-  const minCallDuration = Math.min(...callDurations);
-  const maxCallDuration = Math.max(...callDurations);
+  const maxLiveCompanyCount = Math.max(...liveCompanyCounts);
+  const minOnboardingScore = Math.min(...onboardingScores);
+  const maxOnboardingScore = Math.max(...onboardingScores);
+  const minMeetingEvaluation = Math.min(...meetingEvaluations);
+  const maxMeetingEvaluation = Math.max(...meetingEvaluations);
 
   // Her temsilci için puanları hesapla
   const calculatedData: CalculatedRepresentative[] = parsedData.map(item => {
-    // Çağrı adedi puanı - En yüksek çağrı adedine göre yüzde hesapla
-    const callCountPercentage = maxCallCount > 0 ? item.callCount / maxCallCount : 0;
-    const callCountScore = callCountPercentage * weights.callCount;
-
-    // Konuşma süresi puanı - Daha kısa süre = Daha iyi puan
-    const callDurationScore = (1 - normalizeValue(item.callDuration, minCallDuration, maxCallDuration)) * weights.callDuration;
-
     // Audit skoru puanı - 100 tam puan üzerinden hesapla
     const auditScorePercentage = item.auditScore / 100;
     const auditScoreNormalized = auditScorePercentage * weights.auditScore;
 
-    // CSAT puanı - 5 tam puan üzerinden hesapla
-    const csatScorePercentage = item.csatScore / 5;
-    const csatScoreNormalized = csatScorePercentage * weights.csatScore;
+    // Scale Plus için yeni hesaplamalar
+    // Canlıya alınan firma adedi puanı - Hedefe göre yüzde hesapla
+    const liveCompanyPercentage = item.liveCompanyCount >= item.liveCompanyTarget
+      ? 1
+      : item.liveCompanyCount / item.liveCompanyTarget;
+    const liveCompanyScore = liveCompanyPercentage * weights.liveCompanyCount;
 
-    // Toplam başarı endeksi (0-1 arası)
-    const successIndex = callCountScore + callDurationScore + auditScoreNormalized + csatScoreNormalized;
+    // Onboarding anket skoru puanı - 0-100 aralığından normalize et
+    const onboardingScorePercentage = item.onboardingScore / 100;
+    const onboardingScoreNormalized = onboardingScorePercentage * weights.onboardingScore;
+
+    // Toplantı değerlendirmesi puanı - 0-100 aralığından normalize et
+    const meetingEvaluationPercentage = item.meetingEvaluation / 100;
+    const meetingEvaluationNormalized = meetingEvaluationPercentage * weights.meetingEvaluation;
+
+    // Toplam başarı endeksi (0-1 arası) - Scale Plus için güncellendi
+    const successIndex = auditScoreNormalized + liveCompanyScore + onboardingScoreNormalized + meetingEvaluationNormalized;
 
     return {
       name: item.name,
@@ -86,16 +107,38 @@ export const calculateSuccessIndex = (
       callDuration: item.callDuration,
       auditScore: item.auditScore,
       surveyResult: item.csatScore,
-      qualityEvaluation: item.csatScore, // Aynı değeri kullanıyoruz
-      callCountScore,
-      callDurationScore,
+      qualityEvaluation: item.csatScore,
+      callCountScore: 0, // Artık kullanılmıyor
+      callDurationScore: 0, // Artık kullanılmıyor
       auditScoreNormalized,
-      csatScoreNormalized
+      csatScoreNormalized: 0, // Artık kullanılmıyor
+      // Scale Plus için yeni alanlar
+      liveCompanyCount: item.liveCompanyCount,
+      liveCompanyTarget: item.liveCompanyTarget,
+      onboardingScore: item.onboardingScore,
+      meetingEvaluation: item.meetingEvaluation,
+      liveCompanyScore,
+      onboardingScoreNormalized,
+      meetingEvaluationNormalized,
+      // Orijinal değerler (görünüm için)
+      originalOnboardingScore: item.originalOnboardingScore,
+      originalMeetingEvaluation: item.originalMeetingEvaluation
     };
   });
 
   // Başarı endeksine göre sırala (yüksekten düşüğe)
-  calculatedData.sort((a, b) => b.successIndex - a.successIndex);
+  // Aynı başarı endeksi varsa, canlıya alınan firma adedi ve audit skoruna göre sırala
+  calculatedData.sort((a, b) => {
+    if (Math.abs(b.successIndex - a.successIndex) > 0.001) {
+      return b.successIndex - a.successIndex;
+    }
+    // Başarı endeksi aynıysa, canlıya alınan firma adedine göre sırala
+    if (b.liveCompanyCount !== a.liveCompanyCount) {
+      return b.liveCompanyCount - a.liveCompanyCount;
+    }
+    // O da aynıysa, audit skoruna göre sırala
+    return b.auditScore - a.auditScore;
+  });
 
   // Sıralama numaralarını ata
   calculatedData.forEach((item, index) => {
@@ -114,20 +157,30 @@ export const calculateTeamStats = (data: RepresentativeData[]) => {
   const parsedData = data
     .filter(item => 
       item["Audit Skoru"] !== "N/A" && 
-      item["Çağrı Değerlendirme Ortalaması"] !== "N/A"
+      item["Canlıya Alınan Firma Adedi"] !== undefined &&
+      item["Onboarding Anket Skoru"] !== undefined &&
+      item["Toplantı Değerlendirmesi"] !== undefined
     )
     .map(item => ({
       name: item["MT Adı"],
       callCount: Number(item["Toplam Çağrı Adedi"]) || 0,
       callDuration: parseCommaNumber(item["Ortalama Konuşma Süresi"]),
       auditScore: Number(item["Audit Skoru"]) || 0,
-      csatScore: parseCommaNumber(item["Çağrı Değerlendirme Ortalaması"])
+      csatScore: parseCommaNumber(item["Çağrı Değerlendirme Ortalaması"]),
+      // Scale Plus için yeni alanlar
+      liveCompanyCount: Number(item["Canlıya Alınan Firma Adedi"]) || 0,
+      onboardingScore: (Number(item["Onboarding Anket Skoru"]) || 0) * 20,
+      meetingEvaluation: (Number(item["Toplantı Değerlendirmesi"]) || 0) * 20
     }));
 
   const callCounts = parsedData.map(d => d.callCount);
   const callDurations = parsedData.map(d => d.callDuration);
   const auditScores = parsedData.map(d => d.auditScore);
   const csatScores = parsedData.map(d => d.csatScore);
+  // Scale Plus için yeni değerler
+  const liveCompanyCounts = parsedData.map(d => d.liveCompanyCount);
+  const onboardingScores = parsedData.map(d => d.onboardingScore);
+  const meetingEvaluations = parsedData.map(d => d.meetingEvaluation);
 
   // Sabit takım ortalamaları
   return {
@@ -144,12 +197,28 @@ export const calculateTeamStats = (data: RepresentativeData[]) => {
     auditScore: {
       min: Math.min(...auditScores),
       max: Math.max(...auditScores),
-      avg: 76.85 // Sabit değer: Audit
+      avg: Math.round(auditScores.reduce((a, b) => a + b, 0) / auditScores.length * 10) / 10 || 0
     },
     csatScore: {
       min: Math.min(...csatScores),
       max: Math.max(...csatScores),
       avg: 4.88 // Sabit değer: CSAT
+    },
+    // Scale Plus için yeni istatistikler
+    liveCompanyCount: {
+      min: Math.min(...liveCompanyCounts),
+      max: Math.max(...liveCompanyCounts),
+      avg: Math.round(liveCompanyCounts.reduce((a, b) => a + b, 0) / liveCompanyCounts.length) || 0
+    },
+    onboardingScore: {
+      min: Math.min(...onboardingScores),
+      max: Math.max(...onboardingScores),
+      avg: Math.round(onboardingScores.reduce((a, b) => a + b, 0) / onboardingScores.length * 10) / 10 || 0
+    },
+    meetingEvaluation: {
+      min: Math.min(...meetingEvaluations),
+      max: Math.max(...meetingEvaluations),
+      avg: Math.round(meetingEvaluations.reduce((a, b) => a + b, 0) / meetingEvaluations.length * 10) / 10 || 0
     }
   };
 };
@@ -165,42 +234,41 @@ export const debugCalculation = (data: RepresentativeData[]): void => {
     callCount: Number(item["Toplam Çağrı Adedi"]) || 0,
     callDuration: parseCommaNumber(item["Ortalama Konuşma Süresi"]),
     auditScore: Number(item["Audit Skoru"]) || 0,
-    csatScore: parseCommaNumber(item["Çağrı Değerlendirme Ortalaması"])
+    csatScore: parseCommaNumber(item["Çağrı Değerlendirme Ortalaması"]),
+    // Scale Plus için yeni alanlar
+    liveCompanyCount: Number(item["Canlıya Alınan Firma Adedi"]) || 0,
+    onboardingScore: (Number(item["Onboarding Anket Skoru"]) || 0) * 20,
+    meetingEvaluation: (Number(item["Toplantı Değerlendirmesi"]) || 0) * 20
   }));
 
-  const callCounts = parsedData.map(d => d.callCount);
-  const callDurations = parsedData.map(d => d.callDuration);
-  const auditScores = parsedData.map(d => d.auditScore);
-  const csatScores = parsedData.map(d => d.csatScore);
+  const liveCompanyCounts = parsedData.map(d => d.liveCompanyCount);
+  const onboardingScores = parsedData.map(d => d.onboardingScore);
+  const meetingEvaluations = parsedData.map(d => d.meetingEvaluation);
 
-  const minCallCount = Math.min(...callCounts);
-  const maxCallCount = Math.max(...callCounts);
-  const minCallDuration = Math.min(...callDurations);
-  const maxCallDuration = Math.max(...callDurations);
-  const minAuditScore = Math.min(...auditScores);
-  const maxAuditScore = Math.max(...auditScores);
-  const minCsatScore = Math.min(...csatScores);
-  const maxCsatScore = Math.max(...csatScores);
+  const maxLiveCompanyCount = Math.max(...liveCompanyCounts);
+  const minOnboardingScore = Math.min(...onboardingScores);
+  const maxOnboardingScore = Math.max(...onboardingScores);
+  const minMeetingEvaluation = Math.min(...meetingEvaluations);
+  const maxMeetingEvaluation = Math.max(...meetingEvaluations);
 
   console.log('=== DEBUG HESAPLAMA ===');
   console.log('Min-Max Değerler:');
-  console.log(`Çağrı Adedi: ${minCallCount} - ${maxCallCount}`);
-  console.log(`Konuşma Süresi: ${minCallDuration} - ${maxCallDuration}`);
-  console.log(`Audit: ${minAuditScore} - ${maxAuditScore}`);
-  console.log(`CSAT: ${minCsatScore} - ${maxCsatScore}`);
+  console.log(`Canlıya Alınan Firma Adedi: ${Math.min(...liveCompanyCounts)} - ${maxLiveCompanyCount}`);
+  console.log(`Onboarding Anket Skoru: ${minOnboardingScore} - ${maxOnboardingScore}`);
+  console.log(`Toplantı Değerlendirmesi: ${minMeetingEvaluation} - ${maxMeetingEvaluation}`);
 
   parsedData.forEach(item => {
-    const callCountScore = normalizeValue(item.callCount, minCallCount, maxCallCount) * 0.2;
-    const callDurationScore = (1 - normalizeValue(item.callDuration, minCallDuration, maxCallDuration)) * 0.2;
-    const auditScoreNormalized = normalizeValue(item.auditScore, minAuditScore, maxAuditScore) * 0.3;
-    const csatScoreNormalized = normalizeValue(item.csatScore, minCsatScore, maxCsatScore) * 0.3;
-    const successIndex = callCountScore + callDurationScore + auditScoreNormalized + csatScoreNormalized;
+    const auditScoreNormalized = (item.auditScore / 100) * 0.3;
+    const liveCompanyScore = (maxLiveCompanyCount > 0 ? item.liveCompanyCount / maxLiveCompanyCount : 0) * 0.3;
+    const onboardingScoreNormalized = (item.onboardingScore / 100) * 0.2;
+    const meetingEvaluationNormalized = (item.meetingEvaluation / 100) * 0.2;
+    const successIndex = auditScoreNormalized + liveCompanyScore + onboardingScoreNormalized + meetingEvaluationNormalized;
 
     console.log(`\n${item.name}:`);
-    console.log(`  Çağrı Adedi: ${item.callCount} → ${callCountScore.toFixed(4)}`);
-    console.log(`  Konuşma Süresi: ${item.callDuration} → ${callDurationScore.toFixed(4)}`);
     console.log(`  Audit: ${item.auditScore} → ${auditScoreNormalized.toFixed(4)}`);
-    console.log(`  CSAT: ${item.csatScore} → ${csatScoreNormalized.toFixed(4)}`);
+    console.log(`  Canlıya Alınan Firma Adedi: ${item.liveCompanyCount} → ${liveCompanyScore.toFixed(4)}`);
+    console.log(`  Onboarding Anket Skoru: ${item.onboardingScore} → ${onboardingScoreNormalized.toFixed(4)}`);
+    console.log(`  Toplantı Değerlendirmesi: ${item.meetingEvaluation} → ${meetingEvaluationNormalized.toFixed(4)}`);
     console.log(`  Toplam: ${successIndex.toFixed(4)}`);
   });
 }; 

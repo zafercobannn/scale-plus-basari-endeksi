@@ -35,27 +35,43 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
     return 'Geliştirilmeli';
   };
 
-  const getCallCountPerformance = (count: number): { label: string; color: string } => {
-    // En yüksek çağrı adedini bul
-    const maxCallCount = Math.max(...representatives
-      .filter(r => r["Audit Skoru"] !== "N/A" && r["Çağrı Değerlendirme Ortalaması"] !== "N/A")
-      .map(r => Number(r["Toplam Çağrı Adedi"]) || 0)
+  const getLiveCompanyPerformance = (count: number): { label: string; color: string } => {
+    // Hedef kontrolü (her temsilcinin kendi hedefi)
+    if (count > representative.liveCompanyTarget) {
+      return { label: 'Hedef Aşıldı', color: '#28a745' };
+    }
+    if (count === representative.liveCompanyTarget) {
+      return { label: 'Hedefe Ulaştı', color: '#28a745' };
+    }
+    
+    // En yüksek canlıya alınan firma adedini bul
+    const maxLiveCompanyCount = Math.max(...representatives
+      .filter(r => r["Audit Skoru"] !== "N/A" && r["Canlıya Alınan Firma Adedi"] !== undefined)
+      .map(r => Number(r["Canlıya Alınan Firma Adedi"]) || 0)
     );
     
     // Yüzde hesapla
-    const percentage = maxCallCount > 0 ? (count / maxCallCount) * 100 : 0;
+    const percentage = maxLiveCompanyCount > 0 ? (count / maxLiveCompanyCount) * 100 : 0;
     
-    if (percentage >= 90) return { label: 'Mükemmel', color: '#28a745' };
     if (percentage >= 70) return { label: 'İyi', color: '#ffc107' };
     if (percentage >= 50) return { label: 'Orta', color: '#fd7e14' };
     return { label: 'Geliştirilmeli', color: '#dc3545' };
   };
 
-  const getCallDurationPerformance = (duration: number): { label: string; color: string } => {
-    if (duration <= 350) return { label: 'Mükemmel', color: '#28a745' };
-    if (duration <= 450) return { label: 'İyi', color: '#ffc107' };
-    if (duration <= 550) return { label: 'Orta', color: '#fd7e14' };
-    return { label: 'Geliştirilmeli', color: '#dc3545' };
+  const getOnboardingPerformance = (score: number): { label: string; color: string } => {
+    // 0-100 aralığında değerlendir (5 tam puan = 100)
+    const originalScore = score / 20; // 100'ü 5'e çevir
+    
+    if (originalScore === 5) return { label: 'Mükemmel', color: '#28a745' };
+    return { label: 'İyi', color: '#ffc107' };
+  };
+
+  const getMeetingPerformance = (score: number): { label: string; color: string } => {
+    // 0-100 aralığında değerlendir (5 tam puan = 100)
+    const originalScore = score / 20; // 100'ü 5'e çevir
+    
+    if (originalScore === 5) return { label: 'Mükemmel', color: '#28a745' };
+    return { label: 'İyi', color: '#ffc107' };
   };
 
   return (
@@ -90,52 +106,26 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
           <div className="calculation-details">
             
             <div className="metric-grid">
-              {/* Çağrı Adedi */}
+              {/* Canlıya Alınan Firma Adedi */}
               <div className="metric-card">
                 <div className="metric-header">
-                  <h4>Çağrı Adedi</h4>
-                  <span className="weight">%{(kpiWeights.callCount * 100).toFixed(0)} Ağırlık</span>
+                  <h4>Canlıya Alınan Firma Adedi</h4>
+                  <span className="weight">%{(kpiWeights.liveCompanyCount * 100).toFixed(0)} Ağırlık</span>
                 </div>
                 <div className="metric-value">
-                  <span className="value">{representative.callCount} adet</span>
-                  <span className="score" style={{ color: getCallCountPerformance(representative.callCount).color }}>
-                    {getCallCountPerformance(representative.callCount).label}
+                  <span className="value">{representative.liveCompanyCount} adet</span>
+                  <span className="score" style={{ color: getLiveCompanyPerformance(representative.liveCompanyCount).color }}>
+                    {getLiveCompanyPerformance(representative.liveCompanyCount).label}
                   </span>
                 </div>
                 <div className="metric-score">
-                  <span>Puan: {(representative.callCountScore * 100).toFixed(1)}%</span>
+                  <span>Puan: {(representative.liveCompanyScore * 100).toFixed(1)}%</span>
                   <div className="progress-bar">
                     <div 
                       className="progress-fill"
                       style={{ 
-                        width: `${representative.callCountScore * 100}%`,
-                        backgroundColor: getScoreColor(representative.callCountScore * 5)
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Konuşma Süresi */}
-              <div className="metric-card">
-                <div className="metric-header">
-                  <h4>Ortalama Konuşma Süresi</h4>
-                  <span className="weight">%{(kpiWeights.callDuration * 100).toFixed(0)} Ağırlık</span>
-                </div>
-                <div className="metric-value">
-                  <span className="value">{representative.callDuration} saniye</span>
-                  <span className="score" style={{ color: getCallDurationPerformance(representative.callDuration).color }}>
-                    {getCallDurationPerformance(representative.callDuration).label}
-                  </span>
-                </div>
-                <div className="metric-score">
-                  <span>Puan: {(representative.callDurationScore * 100).toFixed(1)}%</span>
-                  <div className="progress-bar">
-                    <div 
-                      className="progress-fill"
-                      style={{ 
-                        width: `${representative.callDurationScore * 100}%`,
-                        backgroundColor: getScoreColor(representative.callDurationScore * 5)
+                        width: `${representative.liveCompanyScore * 100}%`,
+                        backgroundColor: getScoreColor(representative.liveCompanyScore * 5)
                       }}
                     />
                   </div>
@@ -168,26 +158,52 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
                 </div>
               </div>
 
-              {/* CSAT */}
+              {/* Onboarding Anket Skoru */}
               <div className="metric-card">
                 <div className="metric-header">
-                  <h4>Çağrı Değerlendirme (CSAT)</h4>
-                  <span className="weight">%{(kpiWeights.csatScore * 100).toFixed(0)} Ağırlık</span>
+                  <h4>NPS Call Score</h4>
+                  <span className="weight">%{(kpiWeights.onboardingScore * 100).toFixed(0)} Ağırlık</span>
                 </div>
                 <div className="metric-value">
-                  <span className="value">{representative.surveyResult}/5</span>
-                  <span className="score" style={{ color: getScoreColor(representative.csatScoreNormalized * 3.33) }}>
-                    {getScoreLabel(representative.csatScoreNormalized * 3.33)}
+                  <span className="value">{representative.originalOnboardingScore.toFixed(2)}/5</span>
+                  <span className="score" style={{ color: getOnboardingPerformance(representative.onboardingScore).color }}>
+                    {getOnboardingPerformance(representative.onboardingScore).label}
                   </span>
                 </div>
                 <div className="metric-score">
-                  <span>Puan: {(representative.csatScoreNormalized * 100).toFixed(1)}%</span>
+                  <span>Puan: {(representative.onboardingScoreNormalized * 100).toFixed(1)}%</span>
                   <div className="progress-bar">
                     <div 
                       className="progress-fill"
                       style={{ 
-                        width: `${representative.csatScoreNormalized * 100}%`,
-                        backgroundColor: getScoreColor(representative.csatScoreNormalized * 3.33)
+                        width: `${representative.onboardingScoreNormalized * 100}%`,
+                        backgroundColor: getScoreColor(representative.onboardingScoreNormalized * 5)
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Toplantı Değerlendirmesi */}
+              <div className="metric-card">
+                <div className="metric-header">
+                  <h4>Toplantı Değerlendirmesi</h4>
+                  <span className="weight">%{(kpiWeights.meetingEvaluation * 100).toFixed(0)} Ağırlık</span>
+                </div>
+                <div className="metric-value">
+                  <span className="value">{representative.originalMeetingEvaluation.toFixed(2)}/5</span>
+                  <span className="score" style={{ color: getMeetingPerformance(representative.meetingEvaluation).color }}>
+                    {getMeetingPerformance(representative.meetingEvaluation).label}
+                  </span>
+                </div>
+                <div className="metric-score">
+                  <span>Puan: {(representative.meetingEvaluationNormalized * 100).toFixed(1)}%</span>
+                  <div className="progress-bar">
+                    <div 
+                      className="progress-fill"
+                      style={{ 
+                        width: `${representative.meetingEvaluationNormalized * 100}%`,
+                        backgroundColor: getScoreColor(representative.meetingEvaluationNormalized * 5)
                       }}
                     />
                   </div>
@@ -195,32 +211,32 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
               </div>
             </div>
 
-                         {/* Toplam Hesaplama */}
-             <div className="total-calculation">
-               <h4>Başarı Endeksi</h4>
-               <div className="calculation-formula">
-                 <div className="formula-line">
-                   <span>Çağrı Adedi Puanı:</span>
-                   <span>{representative.callCount} adet (Takım: {teamStats?.callCount.min}-{teamStats?.callCount.max}) → {((representative.callCountScore / kpiWeights.callCount) * 100).toFixed(1)}% × {(kpiWeights.callCount * 100).toFixed(0)}% = {(representative.callCountScore * 100).toFixed(1)}%</span>
-                 </div>
-                 <div className="formula-line">
-                   <span>Konuşma Süresi Puanı:</span>
-                   <span>{representative.callDuration} saniye (Takım: {teamStats?.callDuration.min}-{teamStats?.callDuration.max}) → {((representative.callDurationScore / kpiWeights.callDuration) * 100).toFixed(1)}% × {(kpiWeights.callDuration * 100).toFixed(0)}% = {(representative.callDurationScore * 100).toFixed(1)}%</span>
-                 </div>
-                 <div className="formula-line">
-                   <span>Audit Skoru Puanı:</span>
-                   <span>{representative.auditScore}/100 (Takım: {teamStats?.auditScore.min}-{teamStats?.auditScore.max}) → {((representative.auditScoreNormalized / kpiWeights.auditScore) * 100).toFixed(1)}% × {(kpiWeights.auditScore * 100).toFixed(0)}% = {(representative.auditScoreNormalized * 100).toFixed(1)}%</span>
-                 </div>
-                 <div className="formula-line">
-                   <span>CSAT Puanı:</span>
-                   <span>{representative.surveyResult}/5 (Takım: {teamStats?.csatScore.min}-{teamStats?.csatScore.max}) → {((representative.csatScoreNormalized / kpiWeights.csatScore) * 100).toFixed(1)}% × {(kpiWeights.csatScore * 100).toFixed(0)}% = {(representative.csatScoreNormalized * 100).toFixed(1)}%</span>
-                 </div>
-                 <div className="formula-total">
-                   <span>Başarı Endeksi:</span>
-                   <span>{(representative.successIndex * 100).toFixed(1)}%</span>
-                 </div>
-               </div>
-             </div>
+            {/* Toplam Hesaplama */}
+            <div className="total-calculation">
+              <h4>Başarı Endeksi</h4>
+              <div className="calculation-formula">
+                <div className="formula-line">
+                  <span>Canlıya Alınan Firma Adedi Puanı:</span>
+                  <span>{representative.liveCompanyCount} adet → {((representative.liveCompanyScore / kpiWeights.liveCompanyCount) * 100).toFixed(1)}% × {(kpiWeights.liveCompanyCount * 100).toFixed(0)}% = {(representative.liveCompanyScore * 100).toFixed(1)}%</span>
+                </div>
+                <div className="formula-line">
+                  <span>Audit Skoru Puanı:</span>
+                  <span>{representative.auditScore}/100 → {((representative.auditScoreNormalized / kpiWeights.auditScore) * 100).toFixed(1)}% × {(kpiWeights.auditScore * 100).toFixed(0)}% = {(representative.auditScoreNormalized * 100).toFixed(1)}%</span>
+                </div>
+                <div className="formula-line">
+                  <span>NPS Call Score Puanı:</span>
+                  <span>{representative.originalOnboardingScore.toFixed(2)}/5 → {((representative.onboardingScoreNormalized / kpiWeights.onboardingScore) * 100).toFixed(1)}% × {(kpiWeights.onboardingScore * 100).toFixed(0)}% = {(representative.onboardingScoreNormalized * 100).toFixed(1)}%</span>
+                </div>
+                <div className="formula-line">
+                  <span>Toplantı Değerlendirmesi Puanı:</span>
+                  <span>{representative.originalMeetingEvaluation.toFixed(2)}/5 → {((representative.meetingEvaluationNormalized / kpiWeights.meetingEvaluation) * 100).toFixed(1)}% × {(kpiWeights.meetingEvaluation * 100).toFixed(0)}% = {(representative.meetingEvaluationNormalized * 100).toFixed(1)}%</span>
+                </div>
+                <div className="formula-total">
+                  <span>Başarı Endeksi:</span>
+                  <span>{(representative.successIndex * 100).toFixed(1)}%</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
