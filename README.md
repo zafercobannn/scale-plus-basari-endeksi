@@ -1,0 +1,1 @@
+# scale-plus-basari-endeksi
