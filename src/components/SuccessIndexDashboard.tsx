@@ -50,9 +50,11 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
   };
 
   const getProgressBarColor = (value: number): string => {
-    if (value >= 0.8) return '#10B981'; // Modern yeşil
-    if (value >= 0.6) return '#F59E0B'; // Modern turuncu
-    return '#EF4444'; // Modern kırmızı
+    const score = value * 100; // 0-1 aralığını 0-100'e çevir
+    if (score >= 90) return '#10B981'; // Modern yeşil (90 ve üzeri)
+    if (score >= 80) return '#F59E0B'; // Modern turuncu (80-89.9)
+    if (score >= 60) return '#FCD34D'; // Sarı (60-79.9)
+    return '#EF4444'; // Modern kırmızı (60'ın altı)
   };
 
   const getSuccessIndexColor = (score: number): string => {
