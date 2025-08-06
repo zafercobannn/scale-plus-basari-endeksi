@@ -273,11 +273,11 @@
 .stat-card {
   background: white;
   border-radius: 12px;
-  padding: 16px;
+  padding: 14px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -287,14 +287,15 @@
 }
 
 .stat-icon {
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  border-radius: 10px;
+  border-radius: 8px;
   color: white;
+  flex-shrink: 0;
 }
 
 /* Tüm istatistik kartları için tek renk düzeni */
@@ -308,8 +309,8 @@
 }
 
 .stat-icon svg {
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
 }
 
 .stat-content {
@@ -353,8 +354,8 @@
   }
   
   .stat-icon {
-    width: 56px;
-    height: 56px;
+    width: 40px;
+    height: 40px;
   }
   
   /* Büyük ekranlar için de tek renk düzeni */
@@ -396,12 +397,12 @@
   }
   
   .stat-card {
-    padding: 16px;
+    padding: 14px;
   }
   
   .stat-icon {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
   }
   
   .stat-value {
