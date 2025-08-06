@@ -181,7 +181,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
               <th>CANLIYA ALINAN FİRMA ADEDİ</th>
               <th>HEDEF</th>
               <th>AUDIT PUANI</th>
-                              <th>NPS Call Score</th>
+                              <th>NPS CALL SCORE</th>
               <th>TOPLANTI DEĞERLENDİRMESİ</th>
             </tr>
           </thead>
