@@ -301,7 +301,8 @@
 .stat-card:nth-child(1) .stat-icon,
 .stat-card:nth-child(2) .stat-icon,
 .stat-card:nth-child(3) .stat-icon,
-.stat-card:nth-child(4) .stat-icon {
+.stat-card:nth-child(4) .stat-icon,
+.stat-card:nth-child(5) .stat-icon {
   background: #F6F6F7;
   color: #333;
 }
@@ -316,16 +317,18 @@
 }
 
 .stat-value {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   color: #2d3748;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
+  line-height: 1.2;
 }
 
 .stat-label {
-  font-size: 12px;
+  font-size: 10px;
   color: #718096;
   font-weight: 500;
+  line-height: 1.2;
 }
 
 /* Responsive Design */
@@ -358,17 +361,18 @@
   .stat-card:nth-child(1) .stat-icon,
   .stat-card:nth-child(2) .stat-icon,
   .stat-card:nth-child(3) .stat-icon,
-  .stat-card:nth-child(4) .stat-icon {
+  .stat-card:nth-child(4) .stat-icon,
+  .stat-card:nth-child(5) .stat-icon {
     background: #F6F6F7;
     color: #333;
   }
   
   .stat-value {
-    font-size: 28px;
+    font-size: 20px;
   }
   
   .stat-label {
-    font-size: 16px;
+    font-size: 12px;
   }
 }
 
@@ -387,7 +391,7 @@
   }
   
   .team-stats-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 16px;
   }
   
@@ -401,11 +405,11 @@
   }
   
   .stat-value {
-    font-size: 20px;
+    font-size: 16px;
   }
   
   .stat-label {
-    font-size: 12px;
+    font-size: 10px;
   }
   
   .dashboard-table {
