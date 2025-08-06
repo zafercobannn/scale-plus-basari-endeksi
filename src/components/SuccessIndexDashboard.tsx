@@ -70,9 +70,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
   };
 
   const getSuccessIndexCellBackground = (successIndex: number): string => {
-    const score = successIndex * 100; // 0-1 aralığını 0-100'e çevir
-    if (score < 90) return '#FEF3C7'; // Sarı arka plan (90'ın altı için)
-    return 'transparent'; // Normal arka plan
+    return 'transparent'; // Her zaman şeffaf arka plan
   };
 
 
