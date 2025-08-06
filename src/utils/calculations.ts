@@ -182,6 +182,29 @@ export const calculateTeamStats = (data: RepresentativeData[]) => {
   const onboardingScores = parsedData.map(d => d.onboardingScore);
   const meetingEvaluations = parsedData.map(d => d.meetingEvaluation);
 
+  // Başarı endeksi ortalamasını hesapla
+  const successIndexes = parsedData.map(item => {
+    // Audit skoru puanı
+    const auditScorePercentage = item.auditScore / 100;
+    const auditScoreNormalized = auditScorePercentage * 0.30;
+
+    // Canlıya alınan firma adedi puanı (hedef 23 varsayılan)
+    const liveCompanyPercentage = item.liveCompanyCount >= 23 ? 1 : item.liveCompanyCount / 23;
+    const liveCompanyScore = liveCompanyPercentage * 0.30;
+
+    // Onboarding anket skoru puanı
+    const onboardingScorePercentage = item.onboardingScore / 100;
+    const onboardingScoreNormalized = onboardingScorePercentage * 0.20;
+
+    // Toplantı değerlendirmesi puanı
+    const meetingEvaluationPercentage = item.meetingEvaluation / 100;
+    const meetingEvaluationNormalized = meetingEvaluationPercentage * 0.20;
+
+    return auditScoreNormalized + liveCompanyScore + onboardingScoreNormalized + meetingEvaluationNormalized;
+  });
+
+  const successIndexAvg = successIndexes.reduce((a, b) => a + b, 0) / successIndexes.length;
+
   // Sabit takım ortalamaları
   return {
     callCount: {
@@ -219,6 +242,12 @@ export const calculateTeamStats = (data: RepresentativeData[]) => {
       min: Math.min(...meetingEvaluations),
       max: Math.max(...meetingEvaluations),
       avg: Math.round(meetingEvaluations.reduce((a, b) => a + b, 0) / meetingEvaluations.length * 10) / 10 || 0
+    },
+    // Başarı endeksi ortalaması
+    successIndex: {
+      min: Math.min(...successIndexes),
+      max: Math.max(...successIndexes),
+      avg: Math.round(successIndexAvg * 100 * 10) / 10 || 0
     }
   };
 };

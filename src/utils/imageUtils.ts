@@ -6,7 +6,7 @@ export const getRepresentativeImage = (name: string): string => {
   const nameMappings: { [key: string]: string } = {
     'Dilşad Gergin': 'dilsadgergin',
     'Ahmet Onur': 'ahmetonuryarici',
-    'Tolga Özen Kabasakal': 'tolgaozenkabasakal',
+    'Tolga Özen Kabasakal': 'tolga',
     'Hüseyin Günder': 'huseyingunder',
     'Ozan Berk Fettahlı': 'ozanberkfettahli'
   };

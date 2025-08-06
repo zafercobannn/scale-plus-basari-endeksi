@@ -67,6 +67,12 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
     return '#DC2626'; // Koyu kırmızı
   };
 
+  const getSuccessIndexCellBackground = (successIndex: number): string => {
+    const score = successIndex * 100; // 0-1 aralığını 0-100'e çevir
+    if (score < 90) return '#FEF3C7'; // Sarı arka plan (90'ın altı için)
+    return 'transparent'; // Normal arka plan
+  };
+
 
 
   const handleRowClick = (representative: CalculatedRepresentative) => {
@@ -149,6 +155,19 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
                 <div className="stat-label">Canlıya Alınan Hesap Sayısı</div>
               </div>
             </div>
+            <div className="stat-card">
+              <div className="stat-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 6V18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M6 12H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div className="stat-content">
+                <div className="stat-value">{teamStats.successIndex.avg.toFixed(1)}</div>
+                <div className="stat-label">Başarı Endeksi Ortalaması</div>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -170,7 +189,11 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
           </thead>
           <tbody>
             {calculatedData.map((item) => (
-              <tr key={item.name} onClick={() => handleRowClick(item)} className="clickable-row">
+              <tr 
+                key={item.name} 
+                onClick={() => handleRowClick(item)} 
+                className="clickable-row"
+              >
                 <td>
                   <div 
                     className="rank-badge"
@@ -185,7 +208,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
                     <span>{item.name}</span>
                   </div>
                 </td>
-                <td>
+                <td style={{ backgroundColor: getSuccessIndexCellBackground(item.successIndex) }}>
                   <div className="success-index-cell">
                     <span 
                       className="success-value"
