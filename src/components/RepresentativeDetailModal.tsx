@@ -65,22 +65,6 @@ const RepresentativeDetailModal: React.FC<RepresentativeDetailModalProps> = ({
     return { label: 'Geliştirilmeli', color: '#dc3545' };
   };
 
-  const getOnboardingPerformance = (score: number): { label: string; color: string } => {
-    // 0-100 aralığında değerlendir (5 tam puan = 100)
-    const originalScore = score / 20; // 100'ü 5'e çevir
-    
-    if (originalScore === 5) return { label: 'Mükemmel', color: '#28a745' };
-    return { label: 'İyi', color: '#ffc107' };
-  };
-
-  const getMeetingPerformance = (score: number): { label: string; color: string } => {
-    // 0-100 aralığında değerlendir (5 tam puan = 100)
-    const originalScore = score / 20; // 100'ü 5'e çevir
-    
-    if (originalScore === 5) return { label: 'Mükemmel', color: '#28a745' };
-    return { label: 'İyi', color: '#ffc107' };
-  };
-
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>

@@ -29,16 +29,6 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  // Seçili aydan yılı çıkar (örn: "Aralık 2025" -> 2025, "Ocak 2026" -> 2026)
-  const getYearFromMonth = (monthName: string): number => {
-    const match = monthName.match(/\d{4}/);
-    return match ? parseInt(match[0]) : new Date().getFullYear();
-  };
-  
-  // Ay isminden sadece ay adını al (örn: "Aralık 2025" -> "Aralık")
-  const getMonthName = (monthName: string): string => {
-    return monthName.replace(/\s*\d{4}\s*/g, '').trim();
-  };
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Dropdown dışına tıklandığında kapat
