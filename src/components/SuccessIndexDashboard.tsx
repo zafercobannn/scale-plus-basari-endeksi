@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { RepresentativeData, CalculatedRepresentative, KPIWeights } from '../types';
-import { calculateSuccessIndex, calculateTeamStats, debugCalculation } from '../utils/calculations';
+import { calculateSuccessIndex, calculateTeamStats, debugCalculation, calculateYearlyAverages } from '../utils/calculations';
 import RepresentativeDetailModal from './RepresentativeDetailModal';
 import RepresentativeImage from './RepresentativeImage';
 import InfoModal from './InfoModal';
@@ -9,25 +9,131 @@ import './SuccessIndexDashboard.css';
 interface SuccessIndexDashboardProps {
   representatives: RepresentativeData[];
   kpiWeights: KPIWeights;
+  selectedMonth?: string;
+  isYearlyView?: boolean;
+  onMonthChange?: (month: string) => void;
+  availableMonths?: { key: string; label: string }[];
+  allMonthsData?: Record<string, RepresentativeData[]>;
 }
 
-const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ representatives, kpiWeights }) => {
+const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ 
+  representatives, 
+  kpiWeights, 
+  selectedMonth = 'Aralık',
+  isYearlyView = false,
+  onMonthChange,
+  availableMonths = [],
+  allMonthsData
+}) => {
   const [selectedRepresentative, setSelectedRepresentative] = useState<CalculatedRepresentative | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  const [currentMonth] = useState('Temmuz');
-  const [currentYear] = useState(2025);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  // Seçili aydan yılı çıkar (örn: "Aralık 2025" -> 2025, "Ocak 2026" -> 2026)
+  const getYearFromMonth = (monthName: string): number => {
+    const match = monthName.match(/\d{4}/);
+    return match ? parseInt(match[0]) : new Date().getFullYear();
+  };
+  
+  // Ay isminden sadece ay adını al (örn: "Aralık 2025" -> "Aralık")
+  const getMonthName = (monthName: string): string => {
+    return monthName.replace(/\s*\d{4}\s*/g, '').trim();
+  };
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Dropdown dışına tıklandığında kapat
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    if (isDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isDropdownOpen]);
 
   const calculatedData = useMemo(() => {
-    const result = calculateSuccessIndex(representatives, kpiWeights);
-    // Debug için hesaplama detaylarını yazdır
-    debugCalculation(representatives);
-    return result;
-  }, [representatives, kpiWeights]);
+    if (isYearlyView && allMonthsData) {
+      // Yıllık görünümde direkt yıllık ortalamaları kullan
+      return calculateYearlyAverages(allMonthsData, kpiWeights);
+    } else {
+      // Aylık görünümde normal hesaplama
+      const result = calculateSuccessIndex(representatives, kpiWeights);
+      // Debug için hesaplama detaylarını yazdır
+      debugCalculation(representatives);
+      return result;
+    }
+  }, [representatives, kpiWeights, isYearlyView, allMonthsData]);
 
   const teamStats = useMemo(() => {
-    return calculateTeamStats(representatives);
-  }, [representatives]);
+    if (isYearlyView && calculatedData.length > 0) {
+      // Yıllık görünümde calculatedData'dan istatistikleri hesapla
+      const liveCompanyCounts = calculatedData.map(d => d.liveCompanyCount);
+      const auditScores = calculatedData.map(d => d.auditScore);
+      const onboardingScores = calculatedData.map(d => d.originalOnboardingScore);
+      const meetingEvaluations = calculatedData.map(d => d.originalMeetingEvaluation);
+      const successIndexes = calculatedData.map(d => d.successIndex * 100);
+      
+      const liveCompanyTotal = calculatedData.reduce((sum, d) => sum + d.liveCompanyCount, 0);
+      const liveCompanyTargetTotal = calculatedData.reduce((sum, d) => sum + d.liveCompanyTarget, 0);
+      
+      return {
+        callCount: { min: 0, max: 0, avg: 0 },
+        callDuration: { min: 0, max: 0, avg: 0 },
+        auditScore: {
+          min: Math.min(...auditScores),
+          max: Math.max(...auditScores),
+          avg: auditScores.reduce((a, b) => a + b, 0) / auditScores.length
+        },
+        csatScore: { min: 0, max: 0, avg: 0 },
+        liveCompanyCount: {
+          min: Math.min(...liveCompanyCounts),
+          max: Math.max(...liveCompanyCounts),
+          avg: liveCompanyCounts.reduce((a, b) => a + b, 0) / liveCompanyCounts.length
+        },
+        liveCompanyTotal,
+        liveCompanyTargetTotal,
+        onboardingScore: {
+          min: Math.min(...onboardingScores),
+          max: Math.max(...onboardingScores),
+          avg: onboardingScores.reduce((a, b) => a + b, 0) / onboardingScores.length
+        },
+        meetingEvaluation: {
+          min: Math.min(...meetingEvaluations),
+          max: Math.max(...meetingEvaluations),
+          avg: meetingEvaluations.reduce((a, b) => a + b, 0) / meetingEvaluations.length
+        },
+        successIndex: {
+          min: Math.min(...successIndexes),
+          max: Math.max(...successIndexes),
+          avg: successIndexes.reduce((a, b) => a + b, 0) / successIndexes.length
+        }
+      };
+    } else {
+      return calculateTeamStats(representatives);
+    }
+  }, [representatives, isYearlyView, calculatedData]);
+
+  // Aylık hedef toplamları
+  const monthTargetTotals: Record<string, number> = {
+    'Temmuz': 130,
+    'Ağustos': 100,
+    'Eylül': 140,
+    'Ekim': 160,
+    'Kasım': 130,
+    'Aralık': 220,
+    'Yıllık Ortalama': 0 // Yıllık görünümde hesaplanacak
+  };
+
+  const teamTargetTotal = isYearlyView 
+    ? Math.round(representatives.reduce((sum, rep) => sum + (Number(rep["Canlıya Alınan Hesap Sayısı Hedefi"]) || 0), 0))
+    : (monthTargetTotals[selectedMonth] || 220);
 
 
 
@@ -101,9 +207,60 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
             alt="İKAS Logo" 
             className="ikas-logo"
           />
-          <h1>{currentYear} {currentMonth} Scale Plus Başarı Endeksi</h1>
+          <h1>
+            {isYearlyView ? (
+              <>
+                Scale Plus Başarı Endeksi
+                <span className="yearly-badge">📊 Yıllık Ortalama</span>
+              </>
+            ) : (
+              <>
+                <span className="month-in-title">{selectedMonth}</span> Scale Plus Başarı Endeksi
+              </>
+            )}
+          </h1>
         </div>
-
+        {onMonthChange && availableMonths.length > 0 && (
+          <div className="header-month-dropdown" ref={dropdownRef}>
+            <button 
+              className="month-dropdown-button"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              <span>{selectedMonth}</span>
+              <svg 
+                className={`dropdown-arrow ${isDropdownOpen ? 'open' : ''}`}
+                width="16" 
+                height="16" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            {isDropdownOpen && (
+              <div className="month-dropdown-menu">
+                {availableMonths.map((month) => (
+                  <button
+                    key={month.key}
+                    className={`month-dropdown-item ${selectedMonth === month.label ? 'active' : ''}`}
+                    onClick={() => {
+                      onMonthChange(month.key);
+                      setIsDropdownOpen(false);
+                    }}
+                  >
+                    {month.label}
+                    {selectedMonth === month.label && (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Team Statistics */}
@@ -117,7 +274,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
                 </svg>
               </div>
               <div className="stat-content">
-                <div className="stat-value">{Math.round(teamStats.liveCompanyCount.avg).toLocaleString()}</div>
+                <div className="stat-value">{isYearlyView ? teamStats.liveCompanyCount.avg.toFixed(2) : Math.round(teamStats.liveCompanyCount.avg).toLocaleString()}</div>
                 <div className="stat-label">Ortalama Canlıya Alınan Firma Adedi</div>
               </div>
             </div>
@@ -129,7 +286,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
                 </svg>
               </div>
               <div className="stat-content">
-                <div className="stat-value">{teamStats.auditScore.avg.toFixed(1)}</div>
+                <div className="stat-value">{isYearlyView ? teamStats.auditScore.avg.toFixed(2) : teamStats.auditScore.avg.toFixed(1)}</div>
                 <div className="stat-label">Audit Ortalaması</div>
               </div>
             </div>
@@ -143,8 +300,8 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
                 </svg>
               </div>
               <div className="stat-content">
-                <div className="stat-value">130</div>
-                <div className="stat-label">Canlıya Alınan Hesap Sayısı Hedefi</div>
+                <div className="stat-value">{isYearlyView ? teamStats.liveCompanyTargetTotal.toFixed(2) : teamTargetTotal}</div>
+                <div className="stat-label">Canlıya Alınan Hesap Sayısı Hedefi {isYearlyView && '(Yıllık Ortalama)'}</div>
               </div>
             </div>
             <div className="stat-card">
@@ -156,8 +313,8 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
                 </svg>
               </div>
               <div className="stat-content">
-                <div className="stat-value">137</div>
-                <div className="stat-label">Canlıya Alınan Hesap Sayısı</div>
+                <div className="stat-value">{isYearlyView ? teamStats.liveCompanyTotal.toFixed(2) : teamStats.liveCompanyTotal}</div>
+                <div className="stat-label">Canlıya Alınan Hesap Sayısı {isYearlyView && '(Yıllık Ortalama Toplamı)'}</div>
               </div>
             </div>
             <div className="stat-card">
@@ -167,7 +324,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
                 </svg>
               </div>
               <div className="stat-content">
-                <div className="stat-value">{teamStats.successIndex.avg.toFixed(1)}</div>
+                <div className="stat-value">{isYearlyView ? Math.round(teamStats.successIndex.avg) : teamStats.successIndex.avg.toFixed(1)}</div>
                 <div className="stat-label">Başarı Endeksi Ortalaması</div>
               </div>
             </div>
@@ -186,7 +343,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
               <th>CANLIYA ALINAN FİRMA ADEDİ</th>
               <th>HEDEF</th>
               <th>AUDIT PUANI</th>
-                              <th>NPS CALL SCORE</th>
+                              <th>NPS SCORE</th>
               <th>TOPLANTI DEĞERLENDİRMESİ</th>
             </tr>
           </thead>
@@ -219,7 +376,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
                         color: getSuccessIndexColor(isNaN(item.successIndex) ? 0 : item.successIndex * 100)
                       }}
                     >
-                      {isNaN(item.successIndex) ? '0.0' : (item.successIndex * 100).toFixed(1)}
+                      {isNaN(item.successIndex) ? '0' : (isYearlyView ? Math.round(item.successIndex * 100) : (item.successIndex * 100).toFixed(1))}
                     </span>
                     <div className="progress-bar">
                       <div 
@@ -232,10 +389,15 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
                     </div>
                   </div>
                 </td>
-                <td>{item.liveCompanyCount} adet</td>
+                <td>{isYearlyView ? item.liveCompanyCount.toFixed(2) : item.liveCompanyCount} adet</td>
                                   <td>
                     <div className="target-cell">
-                      <div className="target-value">{item.liveCompanyCount}/{item.liveCompanyTarget}</div>
+                      <div className="target-value">
+                        {isYearlyView 
+                          ? `${item.liveCompanyCount.toFixed(2)}/${item.liveCompanyTarget.toFixed(2)}`
+                          : `${item.liveCompanyCount}/${item.liveCompanyTarget}`
+                        }
+                      </div>
                       <div className="target-progress">
                         <div 
                           className="target-progress-fill"
@@ -255,7 +417,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
                     className="audit-score"
                     style={{ backgroundColor: getAuditScoreColor(item.auditScore) }}
                   >
-                    {item.auditScore.toFixed(1)}/100
+                    {isYearlyView ? item.auditScore.toFixed(2) : item.auditScore.toFixed(1)}/100
                   </div>
                 </td>
                                   <td>
@@ -307,6 +469,7 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({ represent
               kpiWeights={kpiWeights}
               isOpen={isModalOpen}
               onClose={handleCloseModal}
+              isYearlyView={isYearlyView}
             />
             <InfoModal
               isOpen={isInfoModalOpen}

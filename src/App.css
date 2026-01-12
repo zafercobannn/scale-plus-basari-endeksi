@@ -79,61 +79,152 @@
 .content-area {
   flex: 1;
   min-width: 0; /* Prevents flex item from overflowing */
-  padding: 2rem;
+  padding: 1rem; /* Orta alanı şampiyon karta yaklaştır */
 }
 
 /* Aylık Seçim Stilleri */
 .month-selector {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+  padding: 1.75rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
   margin-bottom: 2rem;
+  border: 1px solid rgba(99, 102, 241, 0.1);
 }
 
-.month-selector h3 {
-  margin: 0 0 1rem 0;
-  color: #333;
-  font-size: 1.25rem;
+.month-selector-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(99, 102, 241, 0.1);
+}
+
+.month-selector-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #1e293b;
+  font-size: 1.125rem;
   font-weight: 600;
 }
 
+.month-selector-title svg {
+  color: #6366f1;
+}
+
+.month-selector-badge {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
 .month-buttons {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
 }
 
 .month-button {
-  background: #f8f9fa;
-  color: #495057;
-  border: 2px solid #e9ecef;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+  position: relative;
+  background: white;
+  color: #475569;
+  border: 2px solid #e2e8f0;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 500;
-  transition: all 0.2s ease;
-  min-width: 100px;
-  text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+.month-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s;
+}
+
+.month-button:hover::before {
+  left: 100%;
 }
 
 .month-button:hover {
-  background: #e9ecef;
-  border-color: #dee2e6;
-  transform: translateY(-1px);
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .month-button.active {
-  background: #6366f1;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   color: white;
   border-color: #6366f1;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4), 0 2px 8px rgba(99, 102, 241, 0.2);
+  transform: translateY(-2px);
 }
 
 .month-button.active:hover {
-  background: #5855eb;
-  border-color: #5855eb;
+  background: linear-gradient(135deg, #5855eb 0%, #7c3aed 100%);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5), 0 2px 8px rgba(99, 102, 241, 0.3);
+  transform: translateY(-3px);
+}
+
+.month-button-text {
+  position: relative;
+  z-index: 1;
+}
+
+.month-button-check {
+  position: relative;
+  z-index: 1;
+  animation: checkmark 0.3s ease-out;
+}
+
+@keyframes checkmark {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-180deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(10deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .month-selector-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .month-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .month-button {
+    padding: 0.875rem 1rem;
+    font-size: 0.875rem;
+  }
 }
 
 .table-only-container {
@@ -148,7 +239,7 @@
   height: 100vh;
   position: sticky;
   top: 0;
-  margin: 0 15px 0 5px;
+  margin: 0 8px 0 5px; /* Sağ boşluğu azalt */
   padding: 2rem 1rem;
   background: #F5F5F5;
 }
@@ -909,4 +1000,55 @@
   .team-stat-value {
     font-size: 1rem;
   }
+}
+
+/* Loading Screen */
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Admin Link */
+.admin-link-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.admin-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background: rgba(99, 102, 241, 0.1);
+  color: #6366f1;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.admin-link:hover {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: rgba(99, 102, 241, 0.5);
 } 

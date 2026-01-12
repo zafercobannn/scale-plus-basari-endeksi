@@ -11,11 +11,11 @@ const parseCommaNumber = (value: string): number => {
 /**
  * Min-max normalizasyon yapar
  */
-const normalizeValue = (value: number, min: number, max: number): number => {
-  if (isNaN(value) || isNaN(min) || isNaN(max)) return 0;
-  if (max === min) return 0.5; // Eğer tüm değerler aynıysa orta puan ver
-  return (value - min) / (max - min);
-};
+// const normalizeValue = (value: number, min: number, max: number): number => {
+//   if (isNaN(value) || isNaN(min) || isNaN(max)) return 0;
+//   if (max === min) return 0.5; // Eğer tüm değerler aynıysa orta puan ver
+//   return (value - min) / (max - min);
+// };
 
 /**
  * Varsayılan KPI ağırlıkları - Scale Plus için güncellendi
@@ -56,7 +56,7 @@ export const calculateSuccessIndex = (
       csatScore: parseCommaNumber(item["Çağrı Değerlendirme Ortalaması"]),
       // Scale Plus için yeni alanlar - 0-5'ten 0-100'e normalize et
       liveCompanyCount: Number(item["Canlıya Alınan Firma Adedi"]) || 0,
-      liveCompanyTarget: Number(item["Canlıya Alınan Hesap Sayısı Hedefi"]) || 23,
+      liveCompanyTarget: Number(item["Canlıya Alınan Hesap Sayısı Hedefi"]) || 100,
       onboardingScore: (Number(item["Onboarding Anket Skoru"]) || 0) * 20,
       meetingEvaluation: (Number(item["Toplantı Değerlendirmesi"]) || 0) * 20,
       // Orijinal değerler (görünüm için)
@@ -64,16 +64,15 @@ export const calculateSuccessIndex = (
       originalMeetingEvaluation: Number(item["Toplantı Değerlendirmesi"]) || 0
     }));
 
-  // Min-max değerleri bul
-  const liveCompanyCounts = parsedData.map(d => d.liveCompanyCount);
-  const onboardingScores = parsedData.map(d => d.onboardingScore);
-  const meetingEvaluations = parsedData.map(d => d.meetingEvaluation);
-
-  const maxLiveCompanyCount = Math.max(...liveCompanyCounts);
-  const minOnboardingScore = Math.min(...onboardingScores);
-  const maxOnboardingScore = Math.max(...onboardingScores);
-  const minMeetingEvaluation = Math.min(...meetingEvaluations);
-  const maxMeetingEvaluation = Math.max(...meetingEvaluations);
+  // Min-max değerleri bul (şu an kullanılmıyor ama gelecekte gerekebilir)
+  // const liveCompanyCounts = parsedData.map(d => d.liveCompanyCount);
+  // const onboardingScores = parsedData.map(d => d.onboardingScore);
+  // const meetingEvaluations = parsedData.map(d => d.meetingEvaluation);
+  // const maxLiveCompanyCount = Math.max(...liveCompanyCounts);
+  // const minOnboardingScore = Math.min(...onboardingScores);
+  // const maxOnboardingScore = Math.max(...onboardingScores);
+  // const minMeetingEvaluation = Math.min(...meetingEvaluations);
+  // const maxMeetingEvaluation = Math.max(...meetingEvaluations);
 
   // Her temsilci için puanları hesapla
   const calculatedData: CalculatedRepresentative[] = parsedData.map(item => {
@@ -140,9 +139,25 @@ export const calculateSuccessIndex = (
     return b.auditScore - a.auditScore;
   });
 
-  // Sıralama numaralarını ata
+  // Sıralama numaralarını ata (eşit puanlılar aynı sırayı alır: 1,1,3,4,...)
+  let currentRank = 1;
   calculatedData.forEach((item, index) => {
-    item.rank = index + 1;
+    if (index === 0) {
+      item.rank = currentRank;
+      return;
+    }
+
+    const previous = calculatedData[index - 1];
+    const isSamePerformance =
+      Math.abs(item.successIndex - previous.successIndex) <= 0.001 &&
+      item.liveCompanyCount === previous.liveCompanyCount &&
+      item.auditScore === previous.auditScore;
+
+    if (!isSamePerformance) {
+      currentRank = previous.rank + 1;
+    }
+
+    item.rank = currentRank;
   });
 
   return calculatedData;
@@ -169,6 +184,7 @@ export const calculateTeamStats = (data: RepresentativeData[]) => {
       csatScore: parseCommaNumber(item["Çağrı Değerlendirme Ortalaması"]),
       // Scale Plus için yeni alanlar
       liveCompanyCount: Number(item["Canlıya Alınan Firma Adedi"]) || 0,
+      liveCompanyTarget: Number(item["Canlıya Alınan Hesap Sayısı Hedefi"]) || 100,
       onboardingScore: (Number(item["Onboarding Anket Skoru"]) || 0) * 20,
       meetingEvaluation: (Number(item["Toplantı Değerlendirmesi"]) || 0) * 20
     }));
@@ -188,8 +204,8 @@ export const calculateTeamStats = (data: RepresentativeData[]) => {
     const auditScorePercentage = item.auditScore / 100;
     const auditScoreNormalized = auditScorePercentage * 0.30;
 
-    // Canlıya alınan firma adedi puanı (hedef 23 varsayılan)
-    const liveCompanyPercentage = item.liveCompanyCount >= 23 ? 1 : item.liveCompanyCount / 23;
+    // Canlıya alınan firma adedi puanı (temsilci hedefi üzerinden hesapla)
+    const liveCompanyPercentage = item.liveCompanyCount >= item.liveCompanyTarget ? 1 : item.liveCompanyCount / item.liveCompanyTarget;
     const liveCompanyScore = liveCompanyPercentage * 0.30;
 
     // Onboarding anket skoru puanı
@@ -204,6 +220,10 @@ export const calculateTeamStats = (data: RepresentativeData[]) => {
   });
 
   const successIndexAvg = successIndexes.reduce((a, b) => a + b, 0) / successIndexes.length;
+
+  // Toplamlar
+  const liveCompanyTotal = parsedData.reduce((sum, d) => sum + d.liveCompanyCount, 0);
+  const liveCompanyTargetTotal = parsedData.reduce((sum, d) => sum + d.liveCompanyTarget, 0);
 
   // Sabit takım ortalamaları
   return {
@@ -233,6 +253,8 @@ export const calculateTeamStats = (data: RepresentativeData[]) => {
       max: Math.max(...liveCompanyCounts),
       avg: Math.round(liveCompanyCounts.reduce((a, b) => a + b, 0) / liveCompanyCounts.length) || 0
     },
+    liveCompanyTotal,
+    liveCompanyTargetTotal,
     onboardingScore: {
       min: Math.min(...onboardingScores),
       max: Math.max(...onboardingScores),
@@ -250,6 +272,151 @@ export const calculateTeamStats = (data: RepresentativeData[]) => {
       avg: Math.round(successIndexAvg * 100 * 10) / 10 || 0
     }
   };
+};
+
+/**
+ * Tüm ayların verilerinden yıllık ortalamaları hesaplar
+ * Google Sheets mantığı: Her ayın başarı endeksini hesapla, sonra ortalamasını al
+ */
+export const calculateYearlyAverages = (
+  allMonthsData: Record<string, RepresentativeData[]>,
+  weights: KPIWeights = defaultKPIWeights
+): CalculatedRepresentative[] => {
+  // Tüm temsilcilerin isimlerini topla
+  const allRepresentativeNames = new Set<string>();
+  Object.values(allMonthsData).forEach(monthData => {
+    monthData.forEach(rep => {
+      allRepresentativeNames.add(rep["MT Adı"]);
+    });
+  });
+
+  // Her temsilci için yıllık ortalamaları hesapla
+  const yearlyAverages = Array.from(allRepresentativeNames).map(name => {
+    const monthlySuccessIndexes: number[] = [];
+    const monthlyValues: {
+      liveCompanyCount: number[];
+      liveCompanyTarget: number[];
+      auditScore: number[];
+      onboardingScore: number[];
+      meetingEvaluation: number[];
+    } = {
+      liveCompanyCount: [],
+      liveCompanyTarget: [],
+      auditScore: [],
+      onboardingScore: [],
+      meetingEvaluation: []
+    };
+
+    // Tüm aylardan bu temsilcinin verilerini topla ve her ay için başarı endeksini hesapla
+    Object.values(allMonthsData).forEach(monthData => {
+      const repData = monthData.find(rep => rep["MT Adı"] === name);
+      if (repData && repData["Audit Skoru"] !== "N/A") {
+        const liveCompanyCount = Number(repData["Canlıya Alınan Firma Adedi"]) || 0;
+        const liveCompanyTarget = Number(repData["Canlıya Alınan Hesap Sayısı Hedefi"]) || 0;
+        const auditScore = Number(repData["Audit Skoru"]) || 0;
+        const onboardingScore = Number(repData["Onboarding Anket Skoru"]) || 0;
+        const meetingEvaluation = Number(repData["Toplantı Değerlendirmesi"]) || 0;
+
+        // Bu ay için başarı endeksini hesapla
+        const auditScorePercentage = auditScore / 100;
+        const auditScoreNormalized = auditScorePercentage * weights.auditScore;
+
+        const liveCompanyPercentage = liveCompanyCount >= liveCompanyTarget 
+          ? 1 
+          : liveCompanyCount / liveCompanyTarget;
+        const liveCompanyScore = liveCompanyPercentage * weights.liveCompanyCount;
+
+        const onboardingScorePercentage = (onboardingScore * 20) / 100;
+        const onboardingScoreNormalized = onboardingScorePercentage * weights.onboardingScore;
+
+        const meetingEvaluationPercentage = (meetingEvaluation * 20) / 100;
+        const meetingEvaluationNormalized = meetingEvaluationPercentage * weights.meetingEvaluation;
+
+        const monthlySuccessIndex = auditScoreNormalized + liveCompanyScore + onboardingScoreNormalized + meetingEvaluationNormalized;
+        monthlySuccessIndexes.push(monthlySuccessIndex);
+
+        // Ortalamalar için değerleri topla
+        monthlyValues.liveCompanyCount.push(liveCompanyCount);
+        monthlyValues.liveCompanyTarget.push(liveCompanyTarget);
+        monthlyValues.auditScore.push(auditScore);
+        monthlyValues.onboardingScore.push(onboardingScore);
+        monthlyValues.meetingEvaluation.push(meetingEvaluation);
+      }
+    });
+
+    // Yıllık başarı endeksi = aylık başarı endekslerinin ortalaması
+    const avgSuccessIndex = monthlySuccessIndexes.length > 0
+      ? monthlySuccessIndexes.reduce((a, b) => a + b, 0) / monthlySuccessIndexes.length
+      : 0;
+
+    // Diğer metriklerin ortalamaları (görünüm için)
+    const avgLiveCompanyCount = monthlyValues.liveCompanyCount.length > 0
+      ? monthlyValues.liveCompanyCount.reduce((a, b) => a + b, 0) / monthlyValues.liveCompanyCount.length
+      : 0;
+    const avgLiveCompanyTarget = monthlyValues.liveCompanyTarget.length > 0
+      ? monthlyValues.liveCompanyTarget.reduce((a, b) => a + b, 0) / monthlyValues.liveCompanyTarget.length
+      : 0;
+    const avgAuditScore = monthlyValues.auditScore.length > 0
+      ? monthlyValues.auditScore.reduce((a, b) => a + b, 0) / monthlyValues.auditScore.length
+      : 0;
+    const avgOnboardingScore = monthlyValues.onboardingScore.length > 0
+      ? monthlyValues.onboardingScore.reduce((a, b) => a + b, 0) / monthlyValues.onboardingScore.length
+      : 0;
+    const avgMeetingEvaluation = monthlyValues.meetingEvaluation.length > 0
+      ? monthlyValues.meetingEvaluation.reduce((a, b) => a + b, 0) / monthlyValues.meetingEvaluation.length
+      : 0;
+
+    // Ortalama değerlerle normalize edilmiş skorları hesapla (görünüm için)
+    const auditScorePercentage = avgAuditScore / 100;
+    const auditScoreNormalized = auditScorePercentage * weights.auditScore;
+
+    const liveCompanyPercentage = avgLiveCompanyCount >= avgLiveCompanyTarget 
+      ? 1 
+      : avgLiveCompanyCount / avgLiveCompanyTarget;
+    const liveCompanyScore = liveCompanyPercentage * weights.liveCompanyCount;
+
+    const onboardingScorePercentage = (avgOnboardingScore * 20) / 100;
+    const onboardingScoreNormalized = onboardingScorePercentage * weights.onboardingScore;
+
+    const meetingEvaluationPercentage = (avgMeetingEvaluation * 20) / 100;
+    const meetingEvaluationNormalized = meetingEvaluationPercentage * weights.meetingEvaluation;
+
+    const successIndex = avgSuccessIndex;
+
+    return {
+      name,
+      rank: 0, // Sıralama sonra yapılacak
+      successIndex,
+      callCount: 0,
+      callDuration: 0,
+      auditScore: avgAuditScore,
+      surveyResult: 0,
+      qualityEvaluation: 0,
+      callCountScore: 0,
+      callDurationScore: 0,
+      auditScoreNormalized,
+      csatScoreNormalized: 0,
+      liveCompanyCount: avgLiveCompanyCount,
+      liveCompanyTarget: avgLiveCompanyTarget,
+      onboardingScore: avgOnboardingScore * 20,
+      meetingEvaluation: avgMeetingEvaluation * 20,
+      liveCompanyScore,
+      onboardingScoreNormalized,
+      meetingEvaluationNormalized,
+      originalOnboardingScore: avgOnboardingScore,
+      originalMeetingEvaluation: avgMeetingEvaluation
+    };
+  });
+
+  // Başarı endeksine göre sırala
+  yearlyAverages.sort((a, b) => b.successIndex - a.successIndex);
+  
+  // Sıralamayı ekle
+  yearlyAverages.forEach((rep, index) => {
+    rep.rank = index + 1;
+  });
+
+  return yearlyAverages;
 };
 
 /**

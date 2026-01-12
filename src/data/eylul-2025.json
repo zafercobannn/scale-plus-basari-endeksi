@@ -1,6 +1,20 @@
 [
   {
     "MT Adı": "Dilşad Gergin",
+    "Audit Skoru": 65,
+    "Toplam Çağrı Adedi": 0,
+    "Ortalama Konuşma Süresi": "0",
+    "Lokal Kapatma Oranı": "0%",
+    "Kaçan Çağrılar": 0,
+    "Çağrı Değerlendirme Ortalaması": "0",
+    "Çağrı Değerlendirme Adet": 0,
+    "Canlıya Alınan Firma Adedi": 53,
+    "Canlıya Alınan Hesap Sayısı Hedefi": 49,
+    "Onboarding Anket Skoru": 5,
+    "Toplantı Değerlendirmesi": 5
+  },
+  {
+    "MT Adı": "Ahmet Onur Yarıcı",
     "Audit Skoru": 85,
     "Toplam Çağrı Adedi": 0,
     "Ortalama Konuşma Süresi": "0",
@@ -8,13 +22,13 @@
     "Kaçan Çağrılar": 0,
     "Çağrı Değerlendirme Ortalaması": "0",
     "Çağrı Değerlendirme Adet": 0,
-    "Canlıya Alınan Firma Adedi": 54,
-    "Canlıya Alınan Hesap Sayısı Hedefi": 66,
+    "Canlıya Alınan Firma Adedi": 23,
+    "Canlıya Alınan Hesap Sayısı Hedefi": 25,
     "Onboarding Anket Skoru": 5,
-    "Toplantı Değerlendirmesi": 5
+    "Toplantı Değerlendirmesi": 4.95
   },
   {
-    "MT Adı": "Ahmet Onur Yarıcı",
+    "MT Adı": "Tolga Özen Kabasakal",
     "Audit Skoru": 90,
     "Toplam Çağrı Adedi": 0,
     "Ortalama Konuşma Süresi": "0",
@@ -22,38 +36,24 @@
     "Kaçan Çağrılar": 0,
     "Çağrı Değerlendirme Ortalaması": "0",
     "Çağrı Değerlendirme Adet": 0,
-    "Canlıya Alınan Firma Adedi": 19,
-    "Canlıya Alınan Hesap Sayısı Hedefi": 39,
-    "Onboarding Anket Skoru": 4.4,
-    "Toplantı Değerlendirmesi": 4.98
-  },
-  {
-    "MT Adı": "Tolga Özen Kabasakal",
-    "Audit Skoru": 95,
-    "Toplam Çağrı Adedi": 0,
-    "Ortalama Konuşma Süresi": "0",
-    "Lokal Kapatma Oranı": "0%",
-    "Kaçan Çağrılar": 0,
-    "Çağrı Değerlendirme Ortalaması": "0",
-    "Çağrı Değerlendirme Adet": 0,
-    "Canlıya Alınan Firma Adedi": 31,
-    "Canlıya Alınan Hesap Sayısı Hedefi": 39,
-    "Onboarding Anket Skoru": 4.81,
+    "Canlıya Alınan Firma Adedi": 24,
+    "Canlıya Alınan Hesap Sayısı Hedefi": 25,
+    "Onboarding Anket Skoru": 5,
     "Toplantı Değerlendirmesi": 5
   },
   {
     "MT Adı": "Hüseyin Günder",
-    "Audit Skoru": 70,
+    "Audit Skoru": 75,
     "Toplam Çağrı Adedi": 0,
     "Ortalama Konuşma Süresi": "0",
     "Lokal Kapatma Oranı": "0%",
     "Kaçan Çağrılar": 0,
     "Çağrı Değerlendirme Ortalaması": "0",
     "Çağrı Değerlendirme Adet": 0,
-    "Canlıya Alınan Firma Adedi": 26,
-    "Canlıya Alınan Hesap Sayısı Hedefi": 39,
+    "Canlıya Alınan Firma Adedi": 21,
+    "Canlıya Alınan Hesap Sayısı Hedefi": 25,
     "Onboarding Anket Skoru": 5,
-    "Toplantı Değerlendirmesi": 4.98
+    "Toplantı Değerlendirmesi": 4.9
   },
   {
     "MT Adı": "Sude Avşar",
@@ -64,9 +64,9 @@
     "Kaçan Çağrılar": 0,
     "Çağrı Değerlendirme Ortalaması": "0",
     "Çağrı Değerlendirme Adet": 0,
-    "Canlıya Alınan Firma Adedi": 22,
-    "Canlıya Alınan Hesap Sayısı Hedefi": 39,
-    "Onboarding Anket Skoru": 4.17,
-    "Toplantı Değerlendirmesi": 4.85
+    "Canlıya Alınan Firma Adedi": 26,
+    "Canlıya Alınan Hesap Sayısı Hedefi": 25,
+    "Onboarding Anket Skoru": 4.89,
+    "Toplantı Değerlendirmesi": 4.9
   }
 ]

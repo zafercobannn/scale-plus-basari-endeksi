@@ -147,7 +147,7 @@ const KPISettingsModal: React.FC<KPISettingsModalProps> = ({
             {/* Onboarding Anket Skoru */}
             <div className="kpi-weight-item">
               <div className="kpi-weight-header">
-                <h3>Onboarding Anket Skoru (NPS CALL)</h3>
+                <h3>Onboarding Anket Skoru (NPS)</h3>
                 <span className="kpi-weight-percentage">{(weights.onboardingScore * 100).toFixed(1)}%</span>
               </div>
               <div className="kpi-weight-controls">
