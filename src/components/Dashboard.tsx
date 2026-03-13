@@ -48,6 +48,7 @@ const Dashboard: React.FC = () => {
   const [monthNames, setMonthNames] = useState<Record<string, string>>(staticMonthNames);
   const [availableMonths, setAvailableMonths] = useState<MonthOption[]>([]);
   const [loading, setLoading] = useState(true);
+  const [firebaseWarning, setFirebaseWarning] = useState('');
 
   const [kpiWeights, setKpiWeights] = useState<KPIWeights>(defaultKPIWeights);
   const [isKPISettingsOpen, setIsKPISettingsOpen] = useState(false);
@@ -65,6 +66,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const loadFirebaseData = async () => {
       try {
+        setFirebaseWarning('');
         const firebaseMonths = await getAllMonths();
         
         if (firebaseMonths.length > 0) {
@@ -87,7 +89,11 @@ const Dashboard: React.FC = () => {
         }
       } catch (error) {
         console.error('Firebase veri yükleme hatası:', error);
-        // Hata durumunda statik verileri kullan
+        if ((error as { code?: string })?.code === 'permission-denied') {
+          setFirebaseWarning('Firebase verileri okunamadı. Dashboard şu anda yalnızca statik ayları gösteriyor. Firestore kurallarında `months` koleksiyonu için okuma izni gerekiyor.');
+        } else {
+          setFirebaseWarning('Firebase verileri yüklenemedi. Dashboard statik verilerle devam ediyor.');
+        }
       } finally {
         setLoading(false);
       }
@@ -202,6 +208,11 @@ const Dashboard: React.FC = () => {
 
         {/* Orta Alan - Sadece Tablo */}
         <div className="content-area">
+          {firebaseWarning && (
+            <div className="firebase-warning-banner">
+              {firebaseWarning}
+            </div>
+          )}
           <div className="table-only-container">
             <SuccessIndexDashboard 
               representatives={representatives} 

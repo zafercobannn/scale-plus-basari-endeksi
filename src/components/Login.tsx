@@ -15,7 +15,7 @@ const Login: React.FC = () => {
     e.preventDefault();
     
     if (!isConfigured) {
-      setError('Firebase yapılandırması eksik. Lütfen .env dosyasını kontrol edin.');
+      setError('Firebase yapılandırması eksik. Lütfen .env.local dosyasını kontrol edin.');
       return;
     }
 
@@ -61,7 +61,7 @@ const Login: React.FC = () => {
             <p>Admin panelini kullanmak için Firebase yapılandırmanız gerekiyor.</p>
             <ol>
               <li>Firebase Console'da proje oluşturun</li>
-              <li>.env dosyasını Firebase bilgileriyle doldurun</li>
+              <li>.env.local dosyasını Firebase bilgileriyle doldurun</li>
               <li>Uygulamayı yeniden başlatın</li>
             </ol>
           </div>

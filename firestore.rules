@@ -1,0 +1,21 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Public dashboard reads month data without login.
+    match /months/{monthId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null;
+    }
+
+    // KPI weights are also needed by the public dashboard.
+    match /settings/{settingId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

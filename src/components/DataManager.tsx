@@ -22,7 +22,11 @@ const DataManager: React.FC<DataManagerProps> = ({ refreshTrigger, onDataChange 
       const data = await getAllMonths();
       setMonths(data);
     } catch (err: any) {
-      setError('Veriler yüklenirken hata oluştu');
+      if (err?.code === 'permission-denied') {
+        setError('Firestore verileri okunamıyor. Bu hesap için `months` koleksiyonunda okuma izni yok.');
+      } else {
+        setError('Veriler yüklenirken hata oluştu');
+      }
       console.error(err);
     } finally {
       setLoading(false);

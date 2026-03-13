@@ -47,7 +47,7 @@ export const getAllMonths = async (): Promise<MonthData[]> => {
     });
   } catch (error) {
     console.error('Error fetching months:', error);
-    return [];
+    throw error;
   }
 };
 

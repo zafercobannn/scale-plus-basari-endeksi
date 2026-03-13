@@ -54,6 +54,20 @@ npm install
 npm start
 ```
 
+## Firebase
+
+Admin paneli ve Firebase üzerinden veri yönetimi için kök dizinde `.env.local` dosyası bulunmalıdır. Örnek dosyayı kopyalamak için:
+
+```bash
+cp .env.example .env.local
+```
+
+Firestore kurallarını deploy etmek için:
+
+```bash
+npm run firebase:deploy:rules
+```
+
 ## Teknolojiler
 
 - React 18

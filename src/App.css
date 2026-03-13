@@ -82,6 +82,17 @@
   padding: 1rem; /* Orta alanı şampiyon karta yaklaştır */
 }
 
+.firebase-warning-banner {
+  margin-bottom: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  border: 1px solid #f59e0b;
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+  color: #9a3412;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
 /* Aylık Seçim Stilleri */
 .month-selector {
   background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
