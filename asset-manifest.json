@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/scale-plus-basari-endeksi/static/css/main.39f747dd.css",
+    "main.js": "/scale-plus-basari-endeksi/static/js/main.33cc9caa.js",
+    "index.html": "/scale-plus-basari-endeksi/index.html",
+    "main.39f747dd.css.map": "/scale-plus-basari-endeksi/static/css/main.39f747dd.css.map",
+    "main.33cc9caa.js.map": "/scale-plus-basari-endeksi/static/js/main.33cc9caa.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.39f747dd.css",
+    "static/js/main.33cc9caa.js"
+  ]
+}
