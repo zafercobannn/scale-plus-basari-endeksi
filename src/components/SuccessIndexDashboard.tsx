@@ -342,6 +342,15 @@ const SuccessIndexDashboard: React.FC<SuccessIndexDashboardProps> = ({
               <tr 
                 key={item.name} 
                 onClick={() => handleRowClick(item)} 
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleRowClick(item);
+                  }
+                }}
+                tabIndex={0}
+                role="button"
+                aria-label={`${item.name} detaylarını aç`}
                 className="clickable-row"
               >
                 <td>

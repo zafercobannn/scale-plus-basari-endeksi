@@ -79,12 +79,15 @@
 }
 
 .close-button {
-  background: rgba(255, 255, 255, 0.2);
+  /* Başlık zemini #F3FFE3 (neredeyse beyaz); beyaz buton görünmüyordu */
+  background: rgba(45, 80, 22, 0.08);
   border: none;
-  color: white;
+  color: #2d5016;
   font-size: 24px;
+  line-height: 1;
   width: 40px;
   height: 40px;
+  flex-shrink: 0;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -94,7 +97,12 @@
 }
 
 .close-button:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(45, 80, 22, 0.16);
+}
+
+.close-button:focus-visible {
+  outline: 2px solid #2d5016;
+  outline-offset: 2px;
 }
 
 .modal-body {
@@ -161,12 +169,17 @@
 .metric-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-bottom: 16px;
 }
 
 .metric-header h4 {
   margin: 0;
+  /* min-width: 0 olmadan başlık rozeti eziyordu */
+  min-width: 0;
+  flex: 1 1 auto;
   color: #212529;
   font-size: 16px;
   font-weight: 600;
@@ -179,12 +192,16 @@
   border-radius: 4px;
   font-size: 12px;
   font-weight: 500;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .metric-value {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-bottom: 12px;
 }
 
@@ -300,9 +317,9 @@
 
   .modal-header {
     padding: 16px 20px;
-    flex-direction: column;
-    gap: 16px;
-    align-items: stretch;
+    gap: 12px;
+    /* Dikey yığılınca kapatma butonu fotoğrafın altına düşüyordu */
+    align-items: flex-start;
   }
 
   .representative-header {

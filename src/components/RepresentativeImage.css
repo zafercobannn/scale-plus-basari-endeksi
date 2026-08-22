@@ -16,9 +16,12 @@
   height: 48px;
 }
 
+/* Sabit 240px dar ekranlarda modalı kenardan kenara dolduruyordu.
+   30vh sınırı yatay tutulan telefonlarda da makul bir boy verir. */
 .representative-image.large {
-  width: 240px;
-  height: 240px;
+  width: clamp(96px, min(40vw, 30vh), 240px);
+  height: clamp(96px, min(40vw, 30vh), 240px);
+  flex-shrink: 0;
 }
 
 .representative-image img {
@@ -44,7 +47,7 @@
 }
 
 .representative-image.large .avatar-placeholder {
-  font-size: 72px;
+  font-size: clamp(32px, min(13vw, 10vh), 72px);
 }
 
 .loading-spinner {
@@ -63,8 +66,8 @@
 }
 
 .representative-image.large .loading-spinner {
-  width: 96px;
-  height: 96px;
+  width: clamp(40px, min(16vw, 12vh), 96px);
+  height: clamp(40px, min(16vw, 12vh), 96px);
 }
 
 @keyframes spin {

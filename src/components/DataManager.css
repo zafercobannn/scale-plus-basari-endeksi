@@ -135,6 +135,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
+  /* Sarmalama yoksa aksiyon butonları kart dışına taşıp kırpılıyordu */
+  flex-wrap: wrap;
   padding: 20px 24px;
   cursor: pointer;
   transition: background 0.2s ease;
@@ -142,6 +145,11 @@
 
 .month-header:hover {
   background: #f8fafc;
+}
+
+.month-info {
+  min-width: 0;
+  flex: 1 1 240px;
 }
 
 .month-info h3 {
@@ -172,6 +180,7 @@
 .month-actions {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 12px;
 }
 
@@ -211,6 +220,7 @@
 .delete-confirm {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
   color: #64748b;
   font-size: 0.85rem;
@@ -272,6 +282,8 @@
 
 .details-table {
   width: 100%;
+  /* Sarmalayıcı zaten overflow-x: auto; başlıkların bölünmemesi için taban genişlik */
+  min-width: 560px;
   border-collapse: collapse;
   font-size: 0.9rem;
   background: #fff;
@@ -338,4 +350,95 @@
   background: #f8fafc;
   border-color: #22c55e;
   color: #22c55e;
+}
+
+
+/* ============================================================
+   Responsive
+   Bu dosyada hiç kırılma noktası yoktu: dar ekranda "Sil" ve
+   "İptal" butonları kart dışına taşıp kırpıldığı için silme
+   işlemi ne tamamlanabiliyor ne de iptal edilebiliyordu.
+   ============================================================ */
+@media (max-width: 640px) {
+  .data-manager {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  .manager-header {
+    margin-bottom: 20px;
+  }
+
+  .month-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 16px;
+  }
+
+  /* Sütun yönünde flex-basis yüksekliğe uygulanır; 240px boş alan bırakıyordu */
+  .month-info {
+    flex: 0 0 auto;
+  }
+
+  .month-meta {
+    gap: 4px 16px;
+  }
+
+  .month-actions {
+    width: 100%;
+  }
+
+  .btn-delete {
+    flex: 1;
+  }
+
+  .delete-confirm {
+    width: 100%;
+  }
+
+  .delete-confirm > span {
+    flex: 1 0 100%;
+  }
+
+  .btn-confirm-yes,
+  .btn-confirm-no {
+    flex: 1;
+  }
+
+  .month-details {
+    padding: 16px;
+  }
+
+  .empty-state,
+  .loading-state {
+    padding: 48px 16px;
+  }
+}
+
+/* Dokunmatik cihazlarda 44px'lik hedef alanı */
+@media (pointer: coarse) {
+  .btn-expand,
+  .btn-delete,
+  .btn-confirm-yes,
+  .btn-confirm-no,
+  .btn-refresh {
+    min-height: 44px;
+  }
+}
+
+/* Hover durumu dokunuştan sonra takılı kalmasın */
+@media (hover: none) {
+  .month-card:hover {
+    border-color: #e2e8f0;
+    box-shadow: none;
+  }
+
+  .month-header:hover {
+    background: transparent;
+  }
+
+  .btn-delete:hover {
+    transform: none;
+  }
 }
