@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/scale-plus-basari-endeksi/static/css/main.39f747dd.css",
-    "main.js": "/scale-plus-basari-endeksi/static/js/main.33cc9caa.js",
+    "main.css": "/scale-plus-basari-endeksi/static/css/main.77a35321.css",
+    "main.js": "/scale-plus-basari-endeksi/static/js/main.13dcc574.js",
     "index.html": "/scale-plus-basari-endeksi/index.html",
-    "main.39f747dd.css.map": "/scale-plus-basari-endeksi/static/css/main.39f747dd.css.map",
-    "main.33cc9caa.js.map": "/scale-plus-basari-endeksi/static/js/main.33cc9caa.js.map"
+    "main.77a35321.css.map": "/scale-plus-basari-endeksi/static/css/main.77a35321.css.map",
+    "main.13dcc574.js.map": "/scale-plus-basari-endeksi/static/js/main.13dcc574.js.map"
   },
   "entrypoints": [
-    "static/css/main.39f747dd.css",
-    "static/js/main.33cc9caa.js"
+    "static/css/main.77a35321.css",
+    "static/js/main.13dcc574.js"
   ]
 }
