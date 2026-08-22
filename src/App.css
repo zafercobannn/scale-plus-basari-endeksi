@@ -1,6 +1,6 @@
 .App {
   padding: 0; /* Padding'i de kaldır */
-  width: 100vw; /* Full viewport width */
+  width: 100%; /* 100vw kaydırma çubuğunu da sayar ve yatay taşma üretir */
   margin: 0; /* Margin'i kaldır */
   max-width: none; /* Max-width kısıtlamasını kaldır */
   overflow-x: hidden; /* Yatay scroll'u engelle */
@@ -72,7 +72,7 @@
   gap: 0;
   padding: 0;
   margin: 0;
-  width: 100vw;
+  width: 100%;
   max-width: none;
 }
 
@@ -247,7 +247,9 @@
 .left-sidebar {
   width: 320px;
   flex-shrink: 0;
-  height: 100vh;
+  /* Sabit 100vh kısa pencerelerde kartı taşırıyordu */
+  max-height: 100vh;
+  overflow-y: auto;
   position: sticky;
   top: 0;
   margin: 0 8px 0 5px; /* Sağ boşluğu azalt */
@@ -268,6 +270,9 @@
   margin-bottom: 1.5rem;
   display: flex;
   justify-content: center;
+  /* Birincilik paylaşıldığında birden fazla fotoğraf basılıyor */
+  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 .champion-info {
@@ -1010,6 +1015,78 @@
   
   .team-stat-value {
     font-size: 1rem;
+  }
+}
+
+/* ============================================================
+   Yığılmış düzende sıralama ve dokunmatik davranış
+   1199px altında düzen tek sütuna iniyor. Şampiyon kartı üstte
+   kaldığı için tablo ~1,4 ekran aşağıya düşüyordu; sırayı
+   değiştirerek tabloyu ilk ekrana alıyoruz.
+   ============================================================ */
+@media (max-width: 1199px) {
+  .content-area {
+    order: 1;
+  }
+
+  .left-sidebar {
+    order: 2;
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .sidebar {
+    order: 3;
+  }
+
+  /* Şampiyon kartı artık tablonun altında, yatay ve kompakt */
+  .champion-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 1.25rem;
+    text-align: left;
+  }
+
+  .champion-image {
+    margin-bottom: 0;
+    justify-content: flex-start;
+  }
+
+  .champion-stats {
+    margin-top: 0.5rem;
+  }
+
+  .champion-stat-item {
+    margin-bottom: 0;
+  }
+}
+
+/* Çok dar ekranlarda iki sütun sığmıyor, tekrar dikey yığ */
+@media (max-width: 479px) {
+  .champion-card {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .champion-image {
+    justify-content: center;
+  }
+
+  .champion-info {
+    width: 100%;
+  }
+}
+
+/* Dokunmatik cihazlarda hover durumu dokunuştan sonra ekranda
+   takılı kalıyordu; hover efektlerini yalnızca gerçek imleçlere ver */
+@media (hover: none) {
+  .top-performance-item:hover,
+  .month-button:hover {
+    transform: none;
+    box-shadow: none;
   }
 }
 

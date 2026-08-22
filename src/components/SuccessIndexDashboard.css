@@ -190,10 +190,22 @@
 
 /* Table Styles */
 .table-container {
-  overflow-x: hidden;
+  /* Tablonun min-width'i kaba sığmadığında kesilmesin, kaydırılabilsin */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
   width: 100%;
   padding: 0 16px 32px 0;
   box-sizing: border-box;
+  /* Kaydırılabilir olduğunu belli eden kenar gölgesi */
+  background:
+    linear-gradient(to right, #f8f9fa 30%, rgba(248, 249, 250, 0)) left center,
+    linear-gradient(to left, #f8f9fa 30%, rgba(248, 249, 250, 0)) right center,
+    radial-gradient(farthest-side at 0 50%, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0)) left center,
+    radial-gradient(farthest-side at 100% 50%, rgba(0, 0, 0, 0.14), rgba(0, 0, 0, 0)) right center;
+  background-repeat: no-repeat;
+  background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+  background-attachment: local, local, scroll, scroll;
 }
 
 /* MacBook Air 13" için tablo container optimizasyonu */
@@ -273,6 +285,31 @@
   background: #E0F2FE !important;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Tıklanabilirlik yalnızca :hover ile belli oluyordu —
+   dokunmatik ve klavye için karşılıkları */
+.clickable-row:active {
+  background: #BAE6FD !important;
+}
+
+.clickable-row:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: -2px;
+  background: #E0F2FE !important;
+}
+
+@media (hover: none) {
+  .dashboard-table tbody tr:hover,
+  .clickable-row:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .stat-card:hover {
+    transform: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 }
 
 /* Rank Badge */
@@ -406,7 +443,9 @@
 
 .team-stats-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  /* 1fr'nin örtük min-width:auto değeri sütunları içeriğin altına indirmiyor
+     ve dar bantlarda kartları kaptan taşırıyordu */
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 16px;
   width: 100%;
 }
@@ -456,6 +495,7 @@
 
 .stat-content {
   flex: 1;
+  min-width: 0;
 }
 
 .stat-value {
@@ -486,7 +526,7 @@
   }
   
   .team-stats-grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 20px;
   }
   
@@ -533,7 +573,7 @@
   }
   
   .team-stats-grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 16px;
   }
   
@@ -602,25 +642,33 @@
   }
   
   .team-stats-grid {
-    grid-template-columns: repeat(5, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
   }
   
+  /* Bu bantta 5 kart yan yana ~780px'e sığıyor; değerler
+     1400px üstündekilerden büyük olduğu için kartlar taşıyordu */
   .stat-card {
-    padding: 20px;
+    padding: 14px;
+    gap: 10px;
   }
   
   .stat-icon {
-    width: 48px;
-    height: 48px;
+    width: 32px;
+    height: 32px;
+  }
+  
+  .stat-icon svg {
+    width: 18px;
+    height: 18px;
   }
   
   .stat-value {
-    font-size: 24px;
+    font-size: 16px;
   }
   
   .stat-label {
-    font-size: 14px;
+    font-size: 10px;
   }
 }
 
